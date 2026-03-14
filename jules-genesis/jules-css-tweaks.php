@@ -67,8 +67,31 @@ class Jules_CSS_Tweaks {
 
             /* Splide Related Products Carousel Fix */
             /* The image link anchor tag has an 'mb-3' class (12px margin bottom) which creates an unwanted gap before the text details */
-            li.splide__slide > div > a.mb-3 {
+            li.splide__slide > div > a.mb-3,
+            .splide__slide a.block.aspect-\[3\/4\],
+            .splide__slide a[class*="aspect-"] {
                 margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+                line-height: 0 !important;
+                display: block !important;
+            }
+
+            /* Strip top padding/margin from the container directly below the image */
+            .splide__slide > div > div.flex.flex-col.justify-start {
+                padding-top: 0 !important;
+                margin-top: 0 !important;
+            }
+
+            /* Also strip any bottom spacing on the image element itself */
+            .splide__slide a.aspect-\[3\/4\] img,
+            .splide__slide img {
+                margin-bottom: 0 !important;
+                display: block !important;
+            }
+
+            /* The taxonomy span immediately following the image */
+            .splide__slide > div > div.flex > span.uppercase {
+                margin-top: 0.5rem !important; /* Bring it closer (was mb-1.5 but let's control top margin tightly) */
             }
         </style>
         <?php
