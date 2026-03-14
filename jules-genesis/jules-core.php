@@ -20,6 +20,9 @@ if ( is_admin() ) {
     require_once plugin_dir_path( __FILE__ ) . 'jules-admin.php';
 }
 
+// Require the Image Fixer for WooCommerce Placeholders
+require_once plugin_dir_path( __FILE__ ) . 'jules-image-fixer.php';
+
 class Jules_Core {
 
     private $undo_engine;
