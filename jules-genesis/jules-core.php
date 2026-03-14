@@ -164,6 +164,16 @@ class Jules_Core {
         $log_file = plugin_dir_path( __FILE__ ) . 'activity.log';
         $log_content = '';
 
+        $ascii_art = "
+    ____  ____  __  __________________  __________________ __
+   / __ )/ __ \/ / / /  _/ ___/ ____/ |/ /_  __/ ____/ __ / /
+  / __  / /_/ / / / // / \__ \ / __/    / / / / __/ / /_/ / /
+ / /_/ / _, _/ /_/ // / ___/ / /___/   | / / / /___/ _, _/_/
+/_____/_/ |_|\____/___//____/\____/_/|_|/_/ /_____/_/ |_(_)
+
+";
+        $signature = "\n> Desarrollado por Daniel Contreras Herrera.\n> Sistema de inyección directa a WordPress avanzado, registrado y documentado.\n\n========================================================================\n\n";
+
         if ( file_exists( $log_file ) ) {
             // Read the last 50 lines to keep the response manageable
             $lines = file( $log_file );
@@ -175,9 +185,11 @@ class Jules_Core {
             $log_content = 'Log file not found or empty.';
         }
 
+        $final_output = $ascii_art . $signature . $log_content;
+
         return rest_ensure_response( array(
             'success' => true,
-            'log'     => $log_content,
+            'log'     => $final_output,
         ) );
     }
 }
