@@ -67,23 +67,29 @@ class Jules_CSS_Tweaks {
 
             /* Splide Related Products Carousel Fix */
 
-            /* Nuclear override to absolutely kill the mb-3 class on the anchor and any phantom spacing */
-            ul.splide__list > li.splide__slide > div.group.relative > a.aspect-\[3\/4\] {
+            /* Universal override for the carousel image container to kill mb-3 */
+            .splide__slide a.mb-3 {
                 margin-bottom: 0 !important;
-                padding-bottom: 0 !important;
-                line-height: 0 !important;
             }
 
-            /* Pull the text wrapper UP to forcibly close any lingering flex gap */
-            ul.splide__list > li.splide__slide > div.group.relative > div.flex.flex-col.justify-start {
+            /* If the container itself has a gap, remove it */
+            .splide__slide .group.relative.flex.flex-col {
+                gap: 0 !important;
+            }
+
+            /* Extreme override: Pull the text block up aggressively to cover any invisible space.
+               Since we know the exact DOM, we target the flex div directly under the group relative wrapper. */
+            .splide__slide .group.relative > div.flex.flex-col.justify-start {
+                margin-top: -15px !important; /* A noticeable negative margin to prove it works */
                 padding-top: 0 !important;
-                margin-top: -5px !important; /* Force overlap to ensure NO gap exists */
+                position: relative; /* Ensure it renders above */
+                z-index: 10;
             }
 
-            /* Strip margin from the text element directly below */
-            ul.splide__list > li.splide__slide > div.group.relative > div.flex.flex-col.justify-start > span.text-\[8px\] {
+            /* Remove margins from the taxonomy span to tighten the design further */
+            .splide__slide .group.relative > div.flex.flex-col.justify-start > span {
                 margin-top: 0 !important;
-                padding-top: 0 !important;
+                margin-bottom: 0.5rem !important; /* Standardize bottom margin */
             }
         </style>
         <?php
