@@ -4,3 +4,4 @@
 2026-03-14 14:00:25 - UPDATE: Enviados todos los productos anteriores a la papelera (IDs 136-253) y agregado el nuevo catálogo de 48 perfumes con descripciones profesionales generadas, precios en pesos, y clasificados usando las taxonomías (lh_rareza, lh_genero, lh_marca y lh_aroma).
 2026-03-14 14:20:40 - UPDATE: Re-importado el catálogo de 48 perfumes con la descarga y asignación de imágenes principales encontradas en internet para cada producto.
 2026-03-14 19:24:11 - UPDATE: Creado Jules AI Studio y ejecutado procesamiento de las primeras 5 imágenes del catálogo conectando con Photoroom API para aplicar fondos de lujo con mármol y la placa dorada lhparfum.
+2026-03-14 19:38:46 - UPDATE: Actualizado el prompt de Jules AI Studio para fondos más limpios de mármol y añadido sistema de estampado de marca de agua 'lhparfum' en dorado vía PHP GD. Re-procesados los primeros 5 productos.

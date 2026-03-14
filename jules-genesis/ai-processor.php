@@ -45,13 +45,15 @@ class Jules_AI_Processor {
             ), 500 );
         }
 
-        $prompt = "Una base de marmolados elegante, atrás una placa dorada con la inscripción lhparfum, iluminación dramática de estudio de lujo, encuadre central perfecto.";
+        $prompt = "A sleek black marble pedestal, luxury studio lighting, dark elegant background with soft golden glowing accents, perfect central framing for a product shot.";
 
         $args = array(
             'post_type'      => 'product',
             'posts_per_page' => $limit,
             'offset'         => $offset,
-            'post_status'    => 'publish'
+            'post_status'    => 'publish',
+            'orderby'        => 'ID',
+            'order'          => 'DESC'
         );
 
         $query = new WP_Query($args);
@@ -106,8 +108,11 @@ class Jules_AI_Processor {
 
                 if ($httpcode == 200 && $response) {
                     // Save temporary file
-                    $temp_file = wp_tempnam();
+                    $temp_file = wp_tempnam() . '.jpg';
                     file_put_contents($temp_file, $response);
+
+                    // Add watermark using GD
+                    $this->add_watermark($temp_file);
 
                     // Sideload to WordPress
                     $file_array = array(
@@ -119,7 +124,7 @@ class Jules_AI_Processor {
 
                     if (!is_wp_error($new_image_id)) {
                         set_post_thumbnail($product_id, $new_image_id);
-                        $log[] = "Success: Updated image for Product {$product_id}.";
+                        $log[] = "Success: Updated image with watermark for Product {$product_id}.";
                     } else {
                         @unlink($temp_file);
                         $log[] = "Failed to sideload Photoroom result for Product {$product_id}: " . $new_image_id->get_error_message();
@@ -140,6 +145,39 @@ class Jules_AI_Processor {
             'message' => 'Processed batch.',
             'log'     => $log
         ), 200 );
+    }
+
+    private function add_watermark($filepath) {
+        if (!function_exists('imagecreatefromjpeg') || !function_exists('imagettftext')) {
+            return; // GD or FreeType not available
+        }
+
+        $image = @imagecreatefromjpeg($filepath);
+        if (!$image) {
+            $image = @imagecreatefrompng($filepath);
+        }
+        if (!$image) return;
+
+        $width = imagesx($image);
+        $height = imagesy($image);
+
+        // Gold color: #D4AF37 -> RGB(212, 175, 55)
+        $gold = imagecolorallocate($image, 212, 175, 55);
+        $shadow = imagecolorallocate($image, 0, 0, 0);
+
+        $text = "lhparfum";
+        $font_size = $width * 0.05; // 5% of image width
+        $x = $width * 0.05; // 5% margin from left
+        $y = $height * 0.95; // 5% margin from bottom
+
+        // Fallback to built-in font if no TTF is available
+        // Usually, a TTF font is required for imagettftext. Let's try to use a default or just imagestring if it fails.
+        // I will use imagestring as a safe fallback.
+        imagestring($image, 5, $x+2, $y - 20 + 2, $text, $shadow);
+        imagestring($image, 5, $x, $y - 20, $text, $gold);
+
+        imagejpeg($image, $filepath, 95);
+        imagedestroy($image);
     }
 }
 
