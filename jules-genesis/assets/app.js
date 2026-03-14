@@ -15,6 +15,7 @@ if ( typeof julesGlobal !== 'undefined' && julesGlobal.nonce ) {
 const JulesAdminApp = () => {
     const [ notice, setNotice ] = useState( null );
     const [ isUndoing, setIsUndoing ] = useState( false );
+    const [ logs, setLogs ] = useState( 'Loading logs...' );
 
     // Auto-dismiss notice
     useEffect( () => {
@@ -23,6 +24,21 @@ const JulesAdminApp = () => {
             return () => clearTimeout( timer );
         }
     }, [ notice ] );
+
+    const fetchLogs = () => {
+        apiFetch( { path: '/jules/v1/log', method: 'GET' } )
+            .then( ( response ) => {
+                setLogs( response.log || 'No logs available.' );
+            } )
+            .catch( ( error ) => {
+                setLogs( 'Error fetching logs: ' + error.message );
+            } );
+    };
+
+    // Fetch logs on mount
+    useEffect( () => {
+        fetchLogs();
+    }, [] );
 
     const handleUndo = () => {
         setIsUndoing( true );
@@ -35,11 +51,13 @@ const JulesAdminApp = () => {
         .then( ( response ) => {
             setIsUndoing( false );
             setNotice( { status: 'success', message: response.message } );
+            fetchLogs(); // Re-fetch logs after a successful undo
         } )
         .catch( ( error ) => {
             setIsUndoing( false );
             const errMsg = error.message || 'An error occurred during rollback.';
             setNotice( { status: 'error', message: errMsg } );
+            fetchLogs(); // Re-fetch logs to capture the error if recorded
         } );
     };
 
@@ -76,15 +94,18 @@ const JulesAdminApp = () => {
 
         el(
             'div',
-            { className: 'jules-log-container' },
-            el( 'h3', null, 'System Logs' ),
+            { className: 'jules-log-container', style: { whiteSpace: 'pre-wrap' } },
             el(
-                'p',
-                null,
-                'Activity log can be viewed in ',
-                el( 'code', null, '/jules-genesis/activity.log' ),
-                '. Future updates will stream logs here directly.'
-            )
+                'div',
+                { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+                el( 'h3', { style: { marginTop: 0 } }, 'System Logs' ),
+                el(
+                    Button,
+                    { isSecondary: true, onClick: fetchLogs },
+                    'Refresh Logs'
+                )
+            ),
+            el( 'div', null, logs )
         )
     );
 };

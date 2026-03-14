@@ -62,6 +62,13 @@ class Jules_Core {
             'callback'            => array( $this, 'handle_undo_request' ),
             'permission_callback' => array( $this, 'check_permissions' ),
         ) );
+
+        // Activity Log endpoint
+        register_rest_route( 'jules/v1', '/log', array(
+            'methods'             => 'GET',
+            'callback'            => array( $this, 'handle_log_request' ),
+            'permission_callback' => array( $this, 'check_permissions' ),
+        ) );
     }
 
     /**
@@ -134,6 +141,33 @@ class Jules_Core {
         } else {
             return new WP_Error( 'undo_failed', $result['message'], array( 'status' => 400 ) );
         }
+    }
+
+    /**
+     * Handle the request to fetch the activity log.
+     *
+     * @param WP_REST_Request $request
+     * @return WP_REST_Response
+     */
+    public function handle_log_request( $request ) {
+        $log_file = plugin_dir_path( __FILE__ ) . 'activity.log';
+        $log_content = '';
+
+        if ( file_exists( $log_file ) ) {
+            // Read the last 50 lines to keep the response manageable
+            $lines = file( $log_file );
+            if ( is_array( $lines ) ) {
+                $last_lines = array_slice( $lines, -50 );
+                $log_content = implode( '', $last_lines );
+            }
+        } else {
+            $log_content = 'Log file not found or empty.';
+        }
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'log'     => $log_content,
+        ) );
     }
 }
 
