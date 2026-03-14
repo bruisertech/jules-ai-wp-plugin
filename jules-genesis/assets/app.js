@@ -251,7 +251,8 @@ const JulesAdminApp = () => {
             activeClass: 'is-active',
             tabs: [
                 { name: 'settings', title: 'Control General', className: 'tab-settings' },
-                { name: 'images', title: 'Selector de Imágenes (HD)', className: 'tab-images' }
+                { name: 'images', title: 'Selector de Imágenes (HD)', className: 'tab-images' },
+                { name: 'prices', title: 'Comparador de Precios', className: 'tab-prices' }
             ]
         },
         ( tab ) => {
@@ -259,8 +260,149 @@ const JulesAdminApp = () => {
                 return el( SettingsPanel, null );
             } else if ( tab.name === 'images' ) {
                 return el( ImageSelector, null );
+            } else if ( tab.name === 'prices' ) {
+                return el( PriceTracker, null );
             }
         } )
+    );
+};
+
+const PriceTracker = () => {
+    const [ products, setProducts ] = useState( [] );
+    const [ loading, setLoading ] = useState( true );
+    const [ error, setError ] = useState( null );
+    const [ activeProduct, setActiveProduct ] = useState( null );
+    const [ scanning, setScanning ] = useState( false );
+    const [ priceData, setPriceData ] = useState( null );
+
+    const loadProducts = () => {
+        setLoading( true );
+        apiFetch( { path: '/jules/v1/products-no-image', method: 'GET' } )
+            .then( ( response ) => {
+                if( response.success && response.products ) {
+                    setProducts( response.products );
+                }
+                setLoading( false );
+            } )
+            .catch( ( err ) => {
+                setError( err.message );
+                setLoading( false );
+            } );
+    };
+
+    useEffect( () => {
+        loadProducts();
+    }, [] );
+
+    const handleScan = ( product ) => {
+        setActiveProduct( product );
+        setScanning( true );
+        setPriceData( null );
+        setError( null );
+
+        apiFetch( { path: `/jules/v1/compare-price?product_id=${ product.id }`, method: 'GET' } )
+            .then( ( response ) => {
+                if( response.success ) {
+                    setPriceData( response );
+                }
+                setScanning( false );
+            } )
+            .catch( ( err ) => {
+                setError( err.message );
+                setScanning( false );
+            } );
+    };
+
+    if ( loading ) return el( 'p', null, 'Cargando catálogo para el escáner de precios...' );
+
+    return el(
+        'div',
+        { className: 'jules-price-tracker', style: { display: 'flex', gap: '20px', marginTop: '20px' } },
+
+        // Left Column: Product List
+        el(
+            'div',
+            { style: { width: '40%', maxHeight: '600px', overflowY: 'auto', borderRight: '1px solid #ddd', paddingRight: '20px' } },
+            el( 'h3', null, 'Catálogo (Click para escanear internet)' ),
+            products.map( p => el(
+                'div',
+                {
+                    key: p.id,
+                    onClick: () => handleScan( p ),
+                    style: {
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '10px',
+                        borderBottom: '1px solid #eee',
+                        cursor: 'pointer',
+                        background: activeProduct && activeProduct.id === p.id ? '#f0f0f1' : 'transparent',
+                        borderRadius: '4px'
+                    }
+                },
+                p.current_image ? el( 'img', { src: p.current_image, style: { width: '40px', height: '40px', objectFit: 'contain', marginRight: '10px', background: '#fff', border: '1px solid #ccc' } } )
+                                : el( 'div', { style: { width: '40px', height: '40px', background: '#ccc', marginRight: '10px' } } ),
+                el( 'span', null, p.name )
+            ) )
+        ),
+
+        // Right Column: Price Results
+        el(
+            'div',
+            { style: { width: '60%', paddingLeft: '10px' } },
+            activeProduct ? el( 'h3', null, `Analizando competencia de: ${activeProduct.name}` ) : el( 'h3', null, 'Selecciona un perfume para comparar' ),
+
+            scanning && el( 'div', { style: { marginTop: '20px', fontSize: '16px' } }, '🤖 Jules está escaneando Falabella, Notino, MercadoLibre y e-commerces colombianos...' ),
+            error && el( Notice, { status: 'error', isDismissible: true, onRemove: () => setError( null ) }, error ),
+
+            priceData && el(
+                'div',
+                { style: { marginTop: '20px', padding: '20px', borderRadius: '8px', background: '#f9f9f9', border: '1px solid #ddd', textAlign: 'center' } },
+                el( 'h4', { style: { margin: '0 0 15px 0', fontSize: '18px', color: '#555' } }, 'Resultados del Mercado' ),
+
+                el(
+                    'div',
+                    { style: { display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '20px' } },
+                    // BruiserTech Price
+                    el(
+                        'div',
+                        null,
+                        el( 'p', { style: { margin: 0, color: '#888', fontWeight: 'bold' } }, 'Tu Precio' ),
+                        el( 'p', { style: { margin: 0, fontSize: '24px', fontWeight: 'bold', color: priceData.is_lowest ? '#46b450' : '#dc3232' } }, `$${new Intl.NumberFormat('es-CO').format(priceData.my_price)} COP` )
+                    ),
+                    // VS
+                    el( 'div', { style: { fontSize: '20px', color: '#ccc', fontWeight: 'bold' } }, 'VS' ),
+                    // Competitor Price
+                    el(
+                        'div',
+                        null,
+                        el( 'p', { style: { margin: 0, color: '#888', fontWeight: 'bold' } }, 'Mejor Oferta Web' ),
+                        el( 'p', { style: { margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#1a1a1a' } }, priceData.lowest_competitor ? `$${new Intl.NumberFormat('es-CO').format(priceData.lowest_competitor)} COP` : 'N/A' )
+                    )
+                ),
+
+                // Verdict
+                priceData.is_lowest ? el(
+                    'div',
+                    { style: { padding: '15px', background: '#e1faea', border: '1px solid #46b450', borderRadius: '4px', color: '#005a0b' } },
+                    el( 'span', { style: { fontSize: '30px', display: 'block', marginBottom: '10px' } }, '✅ LOWEST PRICE' ),
+                    el( 'p', { style: { margin: 0, fontWeight: 'bold' } }, '¡Excelente! Estás superando o igualando el precio más agresivo del mercado.' )
+                ) : el(
+                    'div',
+                    { style: { padding: '15px', background: '#fcf0f1', border: '1px solid #dc3232', borderRadius: '4px', color: '#8a2424' } },
+                    el( 'span', { style: { fontSize: '30px', display: 'block', marginBottom: '10px' } }, '⚠️ ALERTA DE PRECIO' ),
+                    el( 'p', { style: { margin: 0, fontWeight: 'bold' } }, 'La competencia está vendiendo más barato. Te sugerimos bajar el precio para ganar la Buy Box.' )
+                ),
+
+                priceData.sources && priceData.sources.length > 0 && el(
+                    'div',
+                    { style: { marginTop: '20px', textAlign: 'left', fontSize: '12px', color: '#666' } },
+                    el( 'p', { style: { fontWeight: 'bold', marginBottom: '5px' } }, 'Muestras detectadas en la red:' ),
+                    el( 'ul', { style: { paddingLeft: '20px', margin: 0 } },
+                        priceData.sources.map((s, i) => el('li', {key: i}, s))
+                    )
+                )
+            )
+        )
     );
 };
 
