@@ -7,3 +7,5 @@
 2026-03-14 19:38:46 - UPDATE: Actualizado el prompt de Jules AI Studio para fondos más limpios de mármol y añadido sistema de estampado de marca de agua 'lhparfum' en dorado vía PHP GD. Re-procesados los primeros 5 productos.
 2026-03-14 19:46:23 - UPDATE: Aplicado el parche de 'Elegancia Inmediata' vía CSS en jules-css-tweaks.php. Se añadió fondo de mármol blanco/dorado, mix-blend-mode para ocultar fondos blancos originales y una placa dorada CSS 'lhparfum' a todas las imágenes de productos.
 2026-03-14 19:50:12 - UPDATE: Reemplazado CSS pseudo-elemento de la placa lhparfum dorada por un logo PNG real animado en la tarjeta del producto, usando la imagen proporcionada por el usuario (logo-lh.png).
+2026-03-14 19:58:34 - UPDATE: Reemplazado fondo de mármol por diseño minimalista CSS con fondo transparente. Iniciada descarga y reemplazo masivo de 48 imágenes en WooCommerce por versiones .PNG transparentes HD (perfume bottle alone) vía Bing scraper.
+2026-03-14 20:04:59 - UPDATE: Creada nueva herramienta interactiva Jules Image Selector en la Consola Bruiser para buscar, previsualizar y asignar imágenes de perfumes en alta definición y sin fondo desde la web.

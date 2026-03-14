@@ -31,6 +31,9 @@ require_once plugin_dir_path( __FILE__ ) . 'import-tool.php';
 // Require the AI Background Processor
 require_once plugin_dir_path( __FILE__ ) . 'ai-processor.php';
 
+// Require the Interactive Image Selector Backend
+require_once plugin_dir_path( __FILE__ ) . 'image-selector.php';
+
 class Jules_Core {
 
     private $undo_engine;

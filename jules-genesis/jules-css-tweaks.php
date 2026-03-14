@@ -7,42 +7,38 @@
 function jules_custom_css_tweaks() {
     ?>
     <style>
-        /* Magic Luxury Effect: White Gold Marble Background */
+        /* Clean Minimalist Effect: Transparent Backgrounds */
         .splide__slide .group div.aspect-\[3\/4\],
         li.product .group div.aspect-\[3\/4\],
         .grid .group div.aspect-\[3\/4\] {
             aspect-ratio: 1 / 1 !important;
-            background-image: url('https://images.unsplash.com/photo-1590451375836-31d7bfb958c2?q=80&w=600&auto=format&fit=crop') !important;
-            background-size: cover !important;
-            background-position: center !important;
+            background-color: transparent !important; /* Clean slate */
             position: relative !important;
             border-radius: 8px !important;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.05), 0 10px 30px rgba(0,0,0,0.05) !important;
             overflow: hidden !important;
-            border: 1px solid rgba(212, 175, 55, 0.3) !important; /* Gold trim */
+            border: none !important;
         }
 
-        /* Make the white background of the perfume disappear into the marble */
+        /* Center the HD transparent perfume bottle perfectly */
         .splide__slide .group div.aspect-\[3\/4\] img,
         li.product .group div.aspect-\[3\/4\] img,
         .grid .group div.aspect-\[3\/4\] img {
             object-fit: contain !important;
-            height: 90% !important;
-            width: 90% !important;
+            height: 85% !important;
+            width: 85% !important;
             position: absolute !important;
-            top: 5%;
-            left: 5%;
-            mix-blend-mode: multiply !important; /* The magic trick */
-            filter: contrast(1.1) brightness(0.95) !important; /* Make colors pop */
-            transition: transform 0.4s ease !important;
+            top: 7.5%;
+            left: 7.5%;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)) !important; /* Elegant shadow since they have no background */
         }
 
-        /* Hover effect for extra luxury */
+        /* Hover effect for depth */
         .grid .group:hover div.aspect-\[3\/4\] img {
-            transform: scale(1.05) !important;
+            transform: scale(1.08) translateY(-5px) !important;
         }
 
-        /* The Animated LH Parfum Logo Logo */
+        /* The Animated LH Parfum Logo */
         @keyframes subtlePulse {
             0% { transform: scale(1); opacity: 0.8; }
             50% { transform: scale(1.05); opacity: 1; }
