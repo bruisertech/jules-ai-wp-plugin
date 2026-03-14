@@ -23,6 +23,9 @@ if ( is_admin() ) {
 // Require the Image Fixer for WooCommerce Placeholders
 require_once plugin_dir_path( __FILE__ ) . 'jules-image-fixer.php';
 
+// Require the CSS Tweaks Injector
+require_once plugin_dir_path( __FILE__ ) . 'jules-css-tweaks.php';
+
 class Jules_Core {
 
     private $undo_engine;
