@@ -1,1 +1,2 @@
 [System Initialization] Jules Genesis plugin initialized.
+[Magic Hand] Updated jules-css-tweaks.php to apply a 1:1 aspect ratio fix to the main shop page product grid, which uses `.grid .group` as its DOM container rather than `.splide__slide` or `li.product`. Fixed cut-off image issue.
