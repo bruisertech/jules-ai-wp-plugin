@@ -29,20 +29,47 @@ class Jules_CSS_Tweaks {
 
         ?>
         <style id="jules-magic-hand-css">
-            /* Fix for unwanted space below WooCommerce product gallery images */
-            .woocommerce-product-gallery .woocommerce-product-gallery__image {
+            /* AGGRESSIVE fix for unwanted space below WooCommerce product gallery images */
+
+            /* Remove margins from the main images column wrapper */
+            .woocommerce div.product div.images {
                 margin-bottom: 0 !important;
-                padding-bottom: 0 !important;
-                line-height: 0;
             }
+
+            /* Remove padding/margin from the gallery figure wrapper */
+            .woocommerce-product-gallery figure.woocommerce-product-gallery__wrapper {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            /* Target the specific image wrappers */
+            .woocommerce-product-gallery .woocommerce-product-gallery__image {
+                margin: 0 !important;
+                padding: 0 !important;
+                line-height: 0 !important;
+                display: block !important;
+            }
+
+            /* Target the image itself to act as a block, removing descender spacing */
             .woocommerce-product-gallery .woocommerce-product-gallery__image img {
                 display: block !important;
                 margin-bottom: 0 !important;
+                width: 100% !important; /* Ensure it fills but doesn't overflow */
             }
-            /* Flexslider specific fixes if the theme uses standard WC slider */
-            .woocommerce-product-gallery .flex-viewport {
+
+            /* If the theme uses WooCommerce's Flexslider, remove its bottom spacing completely */
+            .woocommerce-product-gallery .flex-viewport,
+            .woocommerce-product-gallery .flex-control-nav {
                 margin-bottom: 0 !important;
                 padding-bottom: 0 !important;
+                height: auto !important;
+            }
+
+            /* If the theme hides the thumbnails (.flex-control-nav) but leaves empty space for them */
+            .woocommerce-product-gallery ol.flex-control-nav.flex-control-thumbs {
+                display: none !important; /* Hide thumbs completely if they are empty */
+                margin: 0 !important;
+                padding: 0 !important;
             }
         </style>
         <?php
