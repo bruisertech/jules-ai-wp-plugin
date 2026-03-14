@@ -66,32 +66,24 @@ class Jules_CSS_Tweaks {
             .woocommerce-product-gallery .woocommerce-product-gallery__image img { display: block !important; margin-bottom: 0 !important; }
 
             /* Splide Related Products Carousel Fix */
-            /* The image link anchor tag has an 'mb-3' class (12px margin bottom) which creates an unwanted gap before the text details */
-            li.splide__slide > div > a.mb-3,
-            .splide__slide a.block.aspect-\[3\/4\],
-            .splide__slide a[class*="aspect-"] {
+
+            /* Nuclear override to absolutely kill the mb-3 class on the anchor and any phantom spacing */
+            ul.splide__list > li.splide__slide > div.group.relative > a.aspect-\[3\/4\] {
                 margin-bottom: 0 !important;
                 padding-bottom: 0 !important;
                 line-height: 0 !important;
-                display: block !important;
             }
 
-            /* Strip top padding/margin from the container directly below the image */
-            .splide__slide > div > div.flex.flex-col.justify-start {
+            /* Pull the text wrapper UP to forcibly close any lingering flex gap */
+            ul.splide__list > li.splide__slide > div.group.relative > div.flex.flex-col.justify-start {
                 padding-top: 0 !important;
+                margin-top: -5px !important; /* Force overlap to ensure NO gap exists */
+            }
+
+            /* Strip margin from the text element directly below */
+            ul.splide__list > li.splide__slide > div.group.relative > div.flex.flex-col.justify-start > span.text-\[8px\] {
                 margin-top: 0 !important;
-            }
-
-            /* Also strip any bottom spacing on the image element itself */
-            .splide__slide a.aspect-\[3\/4\] img,
-            .splide__slide img {
-                margin-bottom: 0 !important;
-                display: block !important;
-            }
-
-            /* The taxonomy span immediately following the image */
-            .splide__slide > div > div.flex > span.uppercase {
-                margin-top: 0.5rem !important; /* Bring it closer (was mb-1.5 but let's control top margin tightly) */
+                padding-top: 0 !important;
             }
         </style>
         <?php
