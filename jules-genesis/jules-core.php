@@ -28,6 +28,9 @@ require_once plugin_dir_path( __FILE__ ) . 'jules-css-tweaks.php';
 
 require_once plugin_dir_path( __FILE__ ) . 'import-tool.php';
 
+// Require the AI Background Processor
+require_once plugin_dir_path( __FILE__ ) . 'ai-processor.php';
+
 class Jules_Core {
 
     private $undo_engine;
