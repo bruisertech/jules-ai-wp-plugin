@@ -20,6 +20,7 @@ const ImageSelector = () => {
     const [ fetchingCandidates, setFetchingCandidates ] = useState( false );
     const [ assigning, setAssigning ] = useState( false );
     const [ assignSuccess, setAssignSuccess ] = useState( null );
+    const [ searchQuery, setSearchQuery ] = useState( '' );
 
     const loadProducts = () => {
         setLoading( true );
@@ -40,14 +41,13 @@ const ImageSelector = () => {
         loadProducts();
     }, [] );
 
-    const handleSearch = ( product ) => {
-        setActiveProduct( product );
+    const executeSearch = ( queryTerm ) => {
         setFetchingCandidates( true );
         setCandidates( [] );
         setAssignSuccess( null );
         setError( null );
 
-        apiFetch( { path: `/jules/v1/fetch-candidates?q=${ encodeURIComponent( product.name ) }`, method: 'GET' } )
+        apiFetch( { path: `/jules/v1/fetch-candidates?q=${ encodeURIComponent( queryTerm ) }`, method: 'GET' } )
             .then( ( response ) => {
                 if( response.success && response.candidates ) {
                     setCandidates( response.candidates );
@@ -58,6 +58,20 @@ const ImageSelector = () => {
                 setError( err.message );
                 setFetchingCandidates( false );
             } );
+    };
+
+    const handleSearch = ( product ) => {
+        setActiveProduct( product );
+        // Define default search string to show user what is being searched
+        const defaultQuery = `${ product.name } perfume bottle white background -site:pinterest.com`;
+        setSearchQuery( defaultQuery );
+        executeSearch( defaultQuery );
+    };
+
+    const handleSearchInputKeyDown = ( e ) => {
+        if ( e.key === 'Enter' ) {
+            executeSearch( searchQuery );
+        }
     };
 
     const handleAssign = ( imageUrl ) => {
@@ -120,9 +134,21 @@ const ImageSelector = () => {
         el(
             'div',
             { style: { width: '60%', paddingLeft: '10px' } },
-            activeProduct ? el( 'h3', null, `Buscar mejores imágenes para: ${activeProduct.name}` ) : el( 'h3', null, 'Selecciona un perfume de la lista' ),
+            activeProduct ? el(
+                'div', null,
+                el( 'h3', { style: { marginBottom: '5px' } }, `Imágenes para: ${activeProduct.name}` ),
+                el( 'label', { style: { fontSize: '13px', display: 'block', marginBottom: '5px', color: '#666' } }, 'Términos de búsqueda en tiempo real (Edita y presiona Enter para re-buscar):' ),
+                el( 'input', {
+                    type: 'text',
+                    value: searchQuery,
+                    onChange: (e) => setSearchQuery(e.target.value),
+                    onKeyDown: handleSearchInputKeyDown,
+                    style: { width: '100%', padding: '8px', marginBottom: '15px', border: '1px solid #8c8f94', borderRadius: '4px' },
+                    disabled: fetchingCandidates
+                })
+            ) : el( 'h3', null, 'Selecciona un perfume de la lista' ),
 
-            fetchingCandidates && el( 'p', null, '🕵️ Jules está rastreando la web buscando las 9 mejores imágenes (fondo blanco o transparente)...' ),
+            fetchingCandidates && el( 'p', null, '🕵️ Jules está rastreando la web con tus términos de búsqueda actuales...' ),
             error && el( Notice, { status: 'error', isDismissible: true, onRemove: () => setError( null ) }, error ),
             assignSuccess && el( Notice, { status: 'success', isDismissible: true, onRemove: () => setAssignSuccess( null ) }, assignSuccess ),
             assigning && el( 'p', null, '⬇️ Descargando imagen y vinculando al producto en WooCommerce...' ),

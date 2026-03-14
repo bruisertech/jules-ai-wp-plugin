@@ -82,8 +82,8 @@ class Jules_Image_Selector {
             return new WP_Error( 'no_query', 'Query is required.', array( 'status' => 400 ) );
         }
 
-        // Buscar imágenes del producto en alta calidad pero sin restringir a fondo transparente
-        $search_query = urlencode($query . ' perfume bottle white background -site:pinterest.com');
+        // Usar exactamente el término que envía el frontend (el usuario puede editarlo libremente)
+        $search_query = urlencode($query);
         $url_bing = 'https://www.bing.com/images/search?q=' . $search_query;
 
         $ch = curl_init();
