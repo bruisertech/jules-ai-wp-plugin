@@ -64,6 +64,12 @@ class Jules_CSS_Tweaks {
             .woocommerce div.product div.images { margin-bottom: 0 !important; }
             .woocommerce-product-gallery figure.woocommerce-product-gallery__wrapper { margin: 0 !important; padding: 0 !important; }
             .woocommerce-product-gallery .woocommerce-product-gallery__image img { display: block !important; margin-bottom: 0 !important; }
+
+            /* Splide Related Products Carousel Fix */
+            /* The image link anchor tag has an 'mb-3' class (12px margin bottom) which creates an unwanted gap before the text details */
+            li.splide__slide > div > a.mb-3 {
+                margin-bottom: 0 !important;
+            }
         </style>
         <?php
     }
