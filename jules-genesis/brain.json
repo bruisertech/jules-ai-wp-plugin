@@ -1,0 +1,30 @@
+{
+  "project": "Luxury Parfum Shop",
+  "client": "Bruiser Tech",
+  "styles": {
+    "colors": {
+      "primary": "#d4af37",
+      "secondary": "#2b2b2b",
+      "background": "#fdfdfc",
+      "text": "#1a1a1a"
+    },
+    "typography": {
+      "headings": "Playfair Display, serif",
+      "body": "Lato, sans-serif"
+    }
+  },
+  "woocommerce_harmony": {
+    "version": "latest",
+    "features": [
+      "Custom product gallery",
+      "Ajax add to cart",
+      "Minimalist checkout",
+      "Premium packaging options"
+    ]
+  },
+  "guidelines": {
+    "autonomy": "Choose technically robust and aesthetic options when instructions are ambiguous.",
+    "security": "Enforce strict WP REST API Application Passwords authentication.",
+    "reporting": "Log all file deployments and changes to activity.log with explanations."
+  }
+}
