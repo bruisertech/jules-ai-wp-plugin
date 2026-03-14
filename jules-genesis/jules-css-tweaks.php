@@ -42,26 +42,29 @@ function jules_custom_css_tweaks() {
             transform: scale(1.05) !important;
         }
 
-        /* The Gold 'lhparfum' Plaque */
+        /* The Animated LH Parfum Logo Logo */
+        @keyframes subtlePulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
         .splide__slide .group div.aspect-\[3\/4\]::after,
         li.product .group div.aspect-\[3\/4\]::after,
         .grid .group div.aspect-\[3\/4\]::after {
-            content: "lhparfum" !important;
+            content: "" !important;
             position: absolute !important;
-            bottom: 12px !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            background: linear-gradient(135deg, #f2d576 0%, #d4af37 50%, #b5952f 100%) !important;
-            color: #1a1a1a !important;
-            padding: 4px 16px !important;
-            font-size: 11px !important;
-            font-weight: 700 !important;
-            letter-spacing: 2px !important;
-            text-transform: uppercase !important;
-            border-radius: 2px !important;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.4) !important;
+            bottom: 15px !important;
+            right: 15px !important;
+            width: 40px !important;
+            height: 40px !important;
+            background-image: url('/wp-content/plugins/jules-genesis/assets/logo-lh.png') !important;
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
             z-index: 10 !important;
-            font-family: 'Playfair Display', serif !important;
+            animation: subtlePulse 3s infinite ease-in-out !important;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)) !important;
         }
     </style>
     <?php

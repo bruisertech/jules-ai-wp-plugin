@@ -6,3 +6,4 @@
 2026-03-14 19:24:11 - UPDATE: Creado Jules AI Studio y ejecutado procesamiento de las primeras 5 imágenes del catálogo conectando con Photoroom API para aplicar fondos de lujo con mármol y la placa dorada lhparfum.
 2026-03-14 19:38:46 - UPDATE: Actualizado el prompt de Jules AI Studio para fondos más limpios de mármol y añadido sistema de estampado de marca de agua 'lhparfum' en dorado vía PHP GD. Re-procesados los primeros 5 productos.
 2026-03-14 19:46:23 - UPDATE: Aplicado el parche de 'Elegancia Inmediata' vía CSS en jules-css-tweaks.php. Se añadió fondo de mármol blanco/dorado, mix-blend-mode para ocultar fondos blancos originales y una placa dorada CSS 'lhparfum' a todas las imágenes de productos.
+2026-03-14 19:50:12 - UPDATE: Reemplazado CSS pseudo-elemento de la placa lhparfum dorada por un logo PNG real animado en la tarjeta del producto, usando la imagen proporcionada por el usuario (logo-lh.png).
