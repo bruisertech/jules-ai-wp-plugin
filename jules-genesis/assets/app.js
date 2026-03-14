@@ -122,21 +122,21 @@ const ImageSelector = () => {
             { style: { width: '60%', paddingLeft: '10px' } },
             activeProduct ? el( 'h3', null, `Buscar mejores imágenes para: ${activeProduct.name}` ) : el( 'h3', null, 'Selecciona un perfume de la lista' ),
 
-            fetchingCandidates && el( 'p', null, '🕵️ Jules está buscando en la web fondos HD transparentes...' ),
+            fetchingCandidates && el( 'p', null, '🕵️ Jules está rastreando la web buscando las 9 mejores imágenes (fondo blanco o transparente)...' ),
             error && el( Notice, { status: 'error', isDismissible: true, onRemove: () => setError( null ) }, error ),
             assignSuccess && el( Notice, { status: 'success', isDismissible: true, onRemove: () => setAssignSuccess( null ) }, assignSuccess ),
-            assigning && el( 'p', null, '⬇️ Descargando imagen HD y vinculando al producto en WooCommerce...' ),
+            assigning && el( 'p', null, '⬇️ Descargando imagen y vinculando al producto en WooCommerce...' ),
 
             el(
                 'div',
-                { style: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginTop: '15px' } },
+                { style: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginTop: '15px', maxHeight: '700px', overflowY: 'auto', paddingRight: '10px' } },
                 candidates.map( ( url, idx ) => el(
                     'div',
-                    { key: idx, style: { border: '1px solid #ccc', borderRadius: '5px', padding: '10px', textAlign: 'center', background: '#fff' } },
-                    el( 'img', { src: url, style: { width: '100%', height: '150px', objectFit: 'contain', marginBottom: '10px', background: 'repeating-conic-gradient(#eee 0% 25%, transparent 0% 50%) 50% / 20px 20px' } } ),
+                    { key: idx, style: { border: '1px solid #ccc', borderRadius: '5px', padding: '15px', textAlign: 'center', background: '#fff', boxShadow: '0 2px 5px rgba(0,0,0,0.05)' } },
+                    el( 'img', { src: url, style: { width: '100%', height: '250px', objectFit: 'contain', marginBottom: '15px', background: 'repeating-conic-gradient(#f9f9f9 0% 25%, transparent 0% 50%) 50% / 20px 20px' } } ),
                     el(
                         Button,
-                        { isPrimary: true, disabled: assigning, onClick: () => handleAssign( url ) },
+                        { isPrimary: true, disabled: assigning, onClick: () => handleAssign( url ), style: { width: '100%' } },
                         'Usar esta imagen'
                     )
                 ) )

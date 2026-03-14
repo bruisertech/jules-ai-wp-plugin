@@ -82,8 +82,9 @@ class Jules_Image_Selector {
             return new WP_Error( 'no_query', 'Query is required.', array( 'status' => 400 ) );
         }
 
-        $search_query = urlencode($query . ' perfume bottle png transparent hd -site:pinterest.com');
-        $url_bing = 'https://www.bing.com/images/search?q=' . $search_query . '&qft=+filterui:photo-transparent';
+        // Buscar imágenes del producto en alta calidad pero sin restringir a fondo transparente
+        $search_query = urlencode($query . ' perfume bottle white background -site:pinterest.com');
+        $url_bing = 'https://www.bing.com/images/search?q=' . $search_query;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url_bing);
@@ -94,11 +95,11 @@ class Jules_Image_Selector {
         curl_close($ch);
 
         $candidates = [];
-        // Extract up to 6 high res images
+        // Extraer hasta 9 imágenes de alta resolución
         if (preg_match_all('/murl&quot;:&quot;(https:\/\/[^&"]+)&quot;/', $html_bing, $matches)) {
             $unique_urls = array_unique($matches[1]);
-            // Filter common dead links or dummy images if needed
-            $candidates = array_slice(array_values($unique_urls), 0, 6);
+            // Tomamos las 9 primeras URLs válidas
+            $candidates = array_slice(array_values($unique_urls), 0, 9);
         }
 
         return new WP_REST_Response( array(
