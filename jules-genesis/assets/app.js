@@ -64,7 +64,7 @@ const JulesAdminApp = () => {
     return el(
         'div',
         { className: 'jules-admin-dashboard' },
-        el( 'h1', null, 'Jules Live Dashboard' ),
+        el( 'h1', null, '🔥 Consola de Inyección Bruiser Tech' ),
         el( 'p', null, 'Welcome to the autonomous control center for Bruiser Tech.' ),
 
         notice && el(

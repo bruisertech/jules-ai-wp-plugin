@@ -18,13 +18,13 @@ class Jules_Admin {
 
     public function register_admin_menu() {
         add_menu_page(
-            'Jules Live',           // Page title
-            'Jules Live',           // Menu title
-            'manage_options',       // Capability
-            'jules-live',           // Menu slug
-            array( $this, 'render_admin_page' ), // Callback
-            'dashicons-superhero',  // Icon
-            3                       // Position
+            '🔥 Consola de Inyección Bruiser Tech', // Page title
+            '🔥 Consola Bruiser',                   // Menu title
+            'manage_options',                       // Capability
+            'jules-live',                           // Menu slug
+            array( $this, 'render_admin_page' ),    // Callback
+            'dashicons-superhero',                  // Icon
+            3                                       // Position
         );
     }
 
