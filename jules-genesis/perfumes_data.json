@@ -1,0 +1,443 @@
+[
+    {
+        "name": "Lattafa Bade'e Al Oud Sublime",
+        "price": 190000,
+        "marca": "Lattafa",
+        "rareza": "\u00e1rabe",
+        "genero": "Unisex",
+        "aroma": "Frutal Amaderado",
+        "desc": "Una explosi\u00f3n seductora de manzana jugosa y lichi que se funde en un coraz\u00f3n de rosa aterciopelada y un fondo vibrante de musgo y pachul\u00ed. Un elixir frutal majestuoso que no pide disculpas por brillar."
+    },
+    {
+        "name": "Lattafa Bade'e Al Oud Amethyst",
+        "price": 180000,
+        "marca": "Lattafa",
+        "rareza": "\u00e1rabe",
+        "genero": "Unisex",
+        "aroma": "\u00c1mbar Floral",
+        "desc": "Un enigm\u00e1tico bouquet de rosas turcas y b\u00falgaras abrazado por la calidez del \u00e1mbar y la vainilla especiada. Es un viaje nocturno e hipn\u00f3tico al coraz\u00f3n de oriente, dise\u00f1ado para dejar una estela inolvidable."
+    },
+    {
+        "name": "Lattafa Bade'e Al Oud Honor & Glory",
+        "price": 190000,
+        "marca": "Lattafa",
+        "rareza": "\u00e1rabe",
+        "genero": "Unisex",
+        "aroma": "Especiado Dulce",
+        "desc": "Radiante y opulenta, esta fragancia abre con un adictivo acorde de pi\u00f1a caramelizada que evoluciona hacia especias c\u00e1lidas y maderas nobles. Un aroma que proyecta triunfo, luz y pura realeza moderna."
+    },
+    {
+        "name": "Lattafa Bade'e Al Oud Oud for Glory",
+        "price": 180000,
+        "marca": "Lattafa",
+        "rareza": "\u00e1rabe",
+        "genero": "Unisex",
+        "aroma": "Amaderado Especiado",
+        "desc": "Un oud majestuoso e imponente, magistralmente equilibrado con lavanda fresca, azafr\u00e1n picante y pachul\u00ed oscuro. Es la esencia misma del poder y el misterio embotellado para personalidades inquebrantables."
+    },
+    {
+        "name": "Lattafa Yara Tous",
+        "price": 210000,
+        "marca": "Lattafa",
+        "rareza": "\u00e1rabe",
+        "genero": "Femenino",
+        "aroma": "Frutal Tropical",
+        "desc": "Un c\u00f3ctel tropical jugoso donde el mango, el coco y el maracuy\u00e1 bailan sobre un lecho de flores blancas y vainilla dulce. Alegre, vibrante y peligrosamente adictiva, es verano atrapado en cristal."
+    },
+    {
+        "name": "Lattafa Yara",
+        "price": 188000,
+        "marca": "Lattafa",
+        "rareza": "\u00e1rabe",
+        "genero": "Femenino",
+        "aroma": "Gourmand Frutal",
+        "desc": "Un postre exquisito de fresas con crema, orqu\u00eddea heliotropo y vainilla atalcada. Es una fragancia coqueta, ultra femenina y deliciosamente suave que envuelve como un abrazo de algod\u00f3n de az\u00facar."
+    },
+    {
+        "name": "Lattafa Yara Moi",
+        "price": 190000,
+        "marca": "Lattafa",
+        "rareza": "\u00e1rabe",
+        "genero": "Femenino",
+        "aroma": "\u00c1mbar Dulce",
+        "desc": "Caramelo derretido y melocot\u00f3n jugoso se mezclan con pachul\u00ed terroso y flores blancas. Una interpretaci\u00f3n m\u00e1s profunda, atrevida y sensual del ADN de Yara, ideal para mujeres que dejan huella."
+    },
+    {
+        "name": "Lattafa Asad",
+        "price": 200000,
+        "marca": "Lattafa",
+        "rareza": "\u00e1rabe",
+        "genero": "Masculino",
+        "aroma": "\u00c1mbar Especiado",
+        "desc": "Vainilla negra, pimienta negra y maderas ahumadas crean una estela ferozmente masculina y elegante. Un perfume imponente, profundo y asertivo que domina cualquier habitaci\u00f3n en la que entra."
+    },
+    {
+        "name": "Maison Alhambra Mandarin Sky",
+        "price": 180000,
+        "marca": "Maison Alhambra",
+        "rareza": "\u00e1rabe",
+        "genero": "Masculino",
+        "aroma": "C\u00edtrico Gourmand",
+        "desc": "Un contraste fascinante de mandarina chispeante y caramelo oscuro con haba tonka. Sofisticada y seductora, una fragancia de contrastes que te convierte en el centro de todas las miradas nocturnas."
+    },
+    {
+        "name": "Maison Alhambra Odyssey Candy",
+        "price": 188000,
+        "marca": "Maison Alhambra",
+        "rareza": "\u00e1rabe",
+        "genero": "Femenino",
+        "aroma": "Dulce Gourmand",
+        "desc": "Una explosi\u00f3n de golosinas donde la vainilla, el pralin\u00e9 y los frutos rojos se funden en una nube de pura dulzura. Un aroma juguet\u00f3n, hipn\u00f3tico y extremadamente goloso que despierta todos los sentidos."
+    },
+    {
+        "name": "Al Haramain Amber Oud Gold Edition",
+        "price": 210000,
+        "marca": "Al Haramain",
+        "rareza": "\u00e1rabe",
+        "genero": "Unisex",
+        "aroma": "\u00c1mbar Frutal",
+        "desc": "Un n\u00e9ctar dorado de mel\u00f3n dulce, pi\u00f1a y maderas ricas cubiertas por un \u00e1mbar opulento. Una bestia en rendimiento y proyecci\u00f3n que exuda riqueza, estatus y un lujo desvergonzado en cada atomizaci\u00f3n."
+    },
+    {
+        "name": "Bharara King",
+        "price": 230000,
+        "marca": "Bharara",
+        "rareza": "nicho",
+        "genero": "Masculino",
+        "aroma": "C\u00edtrico Amaderado",
+        "desc": "Naranja vibrante, bergamota y vainilla suave sobre un fondo almizclado y amaderado. La corona de las fragancias vers\u00e1tiles, capaz de proyectar un aura de liderazgo fresco, moderno y arrollador."
+    },
+    {
+        "name": "Lattafa Ajwad",
+        "price": 190000,
+        "marca": "Lattafa",
+        "rareza": "\u00e1rabe",
+        "genero": "Unisex",
+        "aroma": "Floral Amaderado",
+        "desc": "Una danza ex\u00f3tica de frutas confitadas, rosa met\u00e1lica y maderas de cedro ahumadas. Una fragancia atrevida, de nicho en su estilo, que desaf\u00eda las convenciones y deja una memoria olfativa imborrable."
+    },
+    {
+        "name": "Paris Hilton Gold Rush",
+        "price": 150000,
+        "marca": "Paris Hilton",
+        "rareza": "accesible",
+        "genero": "Femenino",
+        "aroma": "Floral Frutal Dulce",
+        "desc": "El glamour del viejo Hollywood embotellado. Nectarina jugosa, orqu\u00eddea de vainilla y pralin\u00e9 se combinan en una estela dorada, luminosa y profundamente elegante, perfecta para brillar en cualquier alfombra roja."
+    },
+    {
+        "name": "Paris Hilton",
+        "price": 160000,
+        "marca": "Paris Hilton",
+        "rareza": "accesible",
+        "genero": "Femenino",
+        "aroma": "Floral Frutal",
+        "desc": "Un cl\u00e1sico Y2K que no pasa de moda. Manzana fresca, mel\u00f3n, fresia y un toque de almizcle limpio. Es coqueta, burbujeante y evoca la esencia pura de la diversi\u00f3n desenfadada y la juventud."
+    },
+    {
+        "name": "Paris Hilton Can Can",
+        "price": 160000,
+        "marca": "Paris Hilton",
+        "rareza": "accesible",
+        "genero": "Femenino",
+        "aroma": "Gourmand Frutal",
+        "desc": "Un cabaret de frutas seductoras donde la nectarina, la grosella negra y la clementina se ba\u00f1an en \u00e1mbar c\u00e1lido. Atrevida, provocativa y deliciosamente dulce, lista para subir el tel\u00f3n."
+    },
+    {
+        "name": "Ralph Lauren Polo Black",
+        "price": 210000,
+        "marca": "Ralph Lauren",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "Amaderado Arom\u00e1tico",
+        "desc": "Mango helado, pachul\u00ed negro y s\u00e1ndalo plateado. Una fragancia oscura, misteriosa y peligrosamente seductora. El accesorio olfativo definitivo para el hombre urbano que domina la noche con clase."
+    },
+    {
+        "name": "Issey Miyake L'Eau d'Issey Pour Homme",
+        "price": 210000,
+        "marca": "Issey Miyake",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "Amaderado Acu\u00e1tico",
+        "desc": "Yuzu japon\u00e9s, notas acu\u00e1ticas y maderas especiadas. Una obra maestra atemporal que captura la pureza del agua sobre las rocas, proyectando una frescura zen, inquebrantable y sofisticada."
+    },
+    {
+        "name": "Hugo Boss XY",
+        "price": 196000,
+        "marca": "Hugo Boss",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "Amaderado Arom\u00e1tico",
+        "desc": "Hojas de pera, albahaca y madera de cedro. Una composici\u00f3n fresca, verde y ligeramente desafiante que representa al hombre moderno en constante evoluci\u00f3n y seguro de su propio magnetismo."
+    },
+    {
+        "name": "Moschino Toy Boy",
+        "price": 230000,
+        "marca": "Moschino",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "Amaderado Especiado Floral",
+        "desc": "Un giro ir\u00f3nico a la masculinidad: rosa especiada, pimienta rosa y clavo sobre un fondo de maderas oscuras y sylkolide. Atrevido, rompedor y exquisitamente \u00fanico; no apto para quienes temen destacar."
+    },
+    {
+        "name": "Ariana Grande Cloud",
+        "price": 210000,
+        "marca": "Ariana Grande",
+        "rareza": "accesible",
+        "genero": "Femenino",
+        "aroma": "Gourmand Dulce",
+        "desc": "Crema de coco, pralin\u00e9 crujiente y orqu\u00eddea de vainilla flotando sobre un acorde almizclado e hipn\u00f3tico. Un sue\u00f1o olfativo reconfortante, et\u00e9reo y adictivo que te transporta a un cielo de algod\u00f3n."
+    },
+    {
+        "name": "Ariana Grande Thank U, Next",
+        "price": 230000,
+        "marca": "Ariana Grande",
+        "rareza": "accesible",
+        "genero": "Femenino",
+        "aroma": "Floral Frutal Gourmand",
+        "desc": "Macarons de az\u00facar, frambuesas silvestres y un coraz\u00f3n atrevido de rosa rosada y coco. Una declaraci\u00f3n de amor propio embotellada, dulce pero con una actitud feroz y renovadora."
+    },
+    {
+        "name": "Dolce & Gabbana Light Blue Pour Femme",
+        "price": 260000,
+        "marca": "Dolce & Gabbana",
+        "rareza": "dise\u00f1ador",
+        "genero": "Femenino",
+        "aroma": "C\u00edtrico Frutal",
+        "desc": "Lim\u00f3n siciliano chispeante, manzana Granny Smith y maderas blancas c\u00e1lidas. La esencia definitiva de un verano mediterr\u00e1neo: fresca, vibrante, sensual y absolutamente inolvidable."
+    },
+    {
+        "name": "Dolce & Gabbana Light Blue Pour Homme",
+        "price": 240000,
+        "marca": "Dolce & Gabbana",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "C\u00edtrico Arom\u00e1tico",
+        "desc": "Mandarina siciliana, romero helado y maderas de almizcle. Un soplo de viento costero que exuda una masculinidad relajada, atractiva y magn\u00e9ticamente fresca bajo el ardiente sol italiano."
+    },
+    {
+        "name": "Lacoste Essential",
+        "price": 230000,
+        "marca": "Lacoste",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "Amaderado Arom\u00e1tico",
+        "desc": "Hojas de tomate crujiente, c\u00edtricos brillantes y pachul\u00ed. Un estallido de energ\u00eda verde y libertad que se mantiene vibrante durante horas, ideal para el esp\u00edritu din\u00e1mico e inquebrantable."
+    },
+    {
+        "name": "Lacoste Red",
+        "price": 190000,
+        "marca": "Lacoste",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "Amaderado Frutal",
+        "desc": "Manzana verde \u00e1cida, licor de pino y vetiver profundo. Un aroma audaz, juguet\u00f3n y lleno de adrenalina pura, dise\u00f1ado para el hombre competitivo que juega a ganar."
+    },
+    {
+        "name": "Perry Ellis 360\u00b0 for Women",
+        "price": 170000,
+        "marca": "Perry Ellis",
+        "rareza": "accesible",
+        "genero": "Femenino",
+        "aroma": "Floral Acu\u00e1tico",
+        "desc": "Mel\u00f3n fresco, nen\u00fafar y lavanda envueltos en un abrazo de almizcle. Un aura cristalina y elegante que proyecta una feminidad limpia, sofisticada y atemporal para todos los d\u00edas."
+    },
+    {
+        "name": "Perry Ellis 360\u00b0 for Men",
+        "price": 150000,
+        "marca": "Perry Ellis",
+        "rareza": "accesible",
+        "genero": "Masculino",
+        "aroma": "Arom\u00e1tico Fresco",
+        "desc": "Bayas de enebro, lim\u00f3n c\u00edtrico y notas especiadas sobre lavanda cl\u00e1sica. Una fragancia de uso diario que define la limpieza masculina con un toque distintivo, fresco y vigorizante."
+    },
+    {
+        "name": "Perry Ellis 360\u00b0 Red for Men",
+        "price": 170000,
+        "marca": "Perry Ellis",
+        "rareza": "accesible",
+        "genero": "Masculino",
+        "aroma": "C\u00edtrico Especiado",
+        "desc": "Naranja intensa, lima y canela picante que se fusionan en un fondo de maderas c\u00e1lidas. Una bomba de cumplidos chispeante y seductora, famosa por su innegable parecido al \u00e9xito italiano."
+    },
+    {
+        "name": "Paco Rabanne 1 Million",
+        "price": 220000,
+        "marca": "Paco Rabanne",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "Amaderado Especiado",
+        "desc": "Cuero rubio, rosa absoluta, canela y mandarina sanguina. El lingote de oro definitivo de la perfumer\u00eda: embriagador, opulento y dise\u00f1ado para el hombre audaz que ama ser el centro de atenci\u00f3n."
+    },
+    {
+        "name": "Paco Rabanne 1 Million Lucky",
+        "price": 230000,
+        "marca": "Paco Rabanne",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "Amaderado Gourmand",
+        "desc": "Ciruela dulce, miel, avellana tostada y madera de cedro. Una versi\u00f3n vibrante, crujiente y deliciosamente adictiva que desaf\u00eda las reglas y convierte la suerte en tu mejor atributo."
+    },
+    {
+        "name": "Antonio Banderas The Golden Secret",
+        "price": 130000,
+        "marca": "Antonio Banderas",
+        "rareza": "accesible",
+        "genero": "Masculino",
+        "aroma": "Especiado Cuero",
+        "desc": "Licor de manzana, pimienta negra y un fondo de cuero intenso. Una fragancia que no esconde su magnetismo, revelando una seducci\u00f3n elegante, madura y envuelta en un misterio embriagador."
+    },
+    {
+        "name": "Antonio Banderas Blue Seduction for Men",
+        "price": 140000,
+        "marca": "Antonio Banderas",
+        "rareza": "accesible",
+        "genero": "Masculino",
+        "aroma": "Acu\u00e1tico Frutal",
+        "desc": "Mel\u00f3n de agua dulce, capuchino fr\u00edo y menta vigorizante. Una ola de frescura relajada y contempor\u00e1nea, ideal para conquistar con una sonrisa encantadora y sin esfuerzo."
+    },
+    {
+        "name": "Antonio Banderas Seduction in Black",
+        "price": 130000,
+        "marca": "Antonio Banderas",
+        "rareza": "accesible",
+        "genero": "Masculino",
+        "aroma": "Oriental Especiado",
+        "desc": "Cilantro fresco, cardamomo y nuez moscada sobre maderas ahumadas. Una fragancia de noche intensa, atrevida y sofisticada para los momentos en que la cercan\u00eda es inevitable."
+    },
+    {
+        "name": "Dior Fahrenheit",
+        "price": 320000,
+        "marca": "Dior",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "Cuero Floral",
+        "desc": "Un choque violento y hermoso de violeta ardiente, cuero intenso y vetiver terroso. Una obra de arte rebelde, audaz y legendaria que separa a los hombres de los ni\u00f1os. Fuego puro."
+    },
+    {
+        "name": "Bvlgari Omnia Coral",
+        "price": 240000,
+        "marca": "Bvlgari",
+        "rareza": "dise\u00f1ador",
+        "genero": "Femenino",
+        "aroma": "Floral Frutal",
+        "desc": "Bayas de goji brillantes, granada jugosa y flor de hibisco. Un elixir rojo radiante, alegre y soleado que captura la esencia de un para\u00edso tropical ba\u00f1ado por la luz del atardecer."
+    },
+    {
+        "name": "Bvlgari Omnia Crystalline",
+        "price": 250000,
+        "marca": "Bvlgari",
+        "rareza": "dise\u00f1ador",
+        "genero": "Femenino",
+        "aroma": "Floral Acu\u00e1tico",
+        "desc": "Flor de loto de la ma\u00f1ana, pera nashi asi\u00e1tica y madera de balsa. Una gema de pureza cristalina y elegancia zen, sutil pero inolvidablemente luminosa en la piel."
+    },
+    {
+        "name": "Bvlgari Omnia Amethyste",
+        "price": 270000,
+        "marca": "Bvlgari",
+        "rareza": "dise\u00f1ador",
+        "genero": "Femenino",
+        "aroma": "Floral Amaderado",
+        "desc": "Iris cubierto de roc\u00edo, rosa b\u00falgara y pomelo rosado. Un aroma noble, empolvado y majestuoso, inspirado en el brillo cautivador de las amatistas m\u00e1s finas y elegantes."
+    },
+    {
+        "name": "Calvin Klein Eternity for Men",
+        "price": 190000,
+        "marca": "Calvin Klein",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "Foug\u00e8re Arom\u00e1tico",
+        "desc": "Lavanda n\u00edtida, salvia verde y maderas ricas de s\u00e1ndalo. El ep\u00edtome del clasicismo rom\u00e1ntico y la masculinidad atemporal, ofreciendo un frescor verde que inspira confianza."
+    },
+    {
+        "name": "Calvin Klein CK One",
+        "price": 180000,
+        "marca": "Calvin Klein",
+        "rareza": "dise\u00f1ador",
+        "genero": "Unisex",
+        "aroma": "C\u00edtrico Arom\u00e1tico",
+        "desc": "Bergamota brillante, t\u00e9 verde, lim\u00f3n y almizcle. El \u00edcono absoluto de los a\u00f1os 90: revolucionario, puro, limpio e inclusivo. Una fragancia para compartir con el mundo."
+    },
+    {
+        "name": "Tommy Hilfiger Tommy",
+        "price": 160000,
+        "marca": "Tommy Hilfiger",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "C\u00edtrico Arom\u00e1tico",
+        "desc": "Menta fresca, manzana del huerto, ar\u00e1ndanos y flor de algod\u00f3n. Un viaje cl\u00e1sico por el estilo de vida americano: jovial, limpio, en\u00e9rgico y siempre listo para la aventura."
+    },
+    {
+        "name": "Tommy Hilfiger Tommy Girl",
+        "price": 170000,
+        "marca": "Tommy Hilfiger",
+        "rareza": "dise\u00f1ador",
+        "genero": "Femenino",
+        "aroma": "Floral Frutal",
+        "desc": "T\u00e9 negro helado con lim\u00f3n, madreselva y flores blancas de manzano. Una brisa primaveral optimista y encantadora que redefine la frescura femenina con una sonrisa perpetua."
+    },
+    {
+        "name": "Dior Sauvage",
+        "price": 360000,
+        "marca": "Dior",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "Foug\u00e8re Fresco",
+        "desc": "Bergamota de Calabria extremadamente jugosa, pimienta de Sichuan vibrante y ambroxan marino intenso. El rey indiscutible de los cumplidos, fiero, crudo y noble al mismo tiempo."
+    },
+    {
+        "name": "Kayali Yum Pistachio Gelato | 33",
+        "price": 220000,
+        "marca": "Kayali",
+        "rareza": "nicho",
+        "genero": "Femenino",
+        "aroma": "Gourmand Nuez",
+        "desc": "Un fest\u00edn decadente de helado de pistacho, ron cremoso, algod\u00f3n de az\u00facar y malvavisco tostado. Irresistiblemente cremosa y dulce, te envuelve en una nube de pura felicidad golosa y lujosa."
+    },
+    {
+        "name": "Gucci Bloom (Inspiraci\u00f3n \u00c1rabe)",
+        "price": 230000,
+        "marca": "Gen\u00e9rico \u00c1rabe",
+        "rareza": "\u00e1rabe",
+        "genero": "Femenino",
+        "aroma": "\u00c1mbar Floral",
+        "desc": "Una majestuosa rosa de damasco entrelazada con pimienta rosa, vainilla y \u00e1mbar ahumado. Un aroma embriagador, opulento y con una estela de misterio abrumadoramente elegante."
+    },
+    {
+        "name": "Britney Spears Fantasy",
+        "price": 180000,
+        "marca": "Britney Spears",
+        "rareza": "accesible",
+        "genero": "Femenino",
+        "aroma": "Gourmand Frutal",
+        "desc": "Kiwi ex\u00f3tico, cupcake de chocolate blanco y orqu\u00eddea sobre maderas sensuales. Una p\u00f3cima de amor encantadora, ic\u00f3nica y ultra femenina que sigue robando corazones desde el primer instante."
+    },
+    {
+        "name": "Moschino Toy 2",
+        "price": 230000,
+        "marca": "Moschino",
+        "rareza": "dise\u00f1ador",
+        "genero": "Femenino",
+        "aroma": "Floral Almizclado",
+        "desc": "Manzana verde crujiente, mandarina brillante y peon\u00eda blanca sobre un almizcle impecable. Tan juguet\u00f3n como elegante, este \"oso blanco\" proyecta una frescura jabonosa, pulcra y sumamente encantadora."
+    },
+    {
+        "name": "Moschino Toy Boy",
+        "price": 250000,
+        "marca": "Moschino",
+        "rareza": "dise\u00f1ador",
+        "genero": "Masculino",
+        "aroma": "Amaderado Especiado",
+        "desc": "Un giro ir\u00f3nico a la masculinidad: rosa especiada, pimienta rosa y clavo sobre maderas oscuras y sylkolide. Atrevido, rompedor y exquisitamente \u00fanico; no apto para quienes temen destacar."
+    },
+    {
+        "name": "Moschino Toy 2 Bubble Gum",
+        "price": 240000,
+        "marca": "Moschino",
+        "rareza": "dise\u00f1ador",
+        "genero": "Femenino",
+        "aroma": "Frutal Dulce",
+        "desc": "Una explosi\u00f3n hiperrealista de goma de mascar rosada, c\u00edtricos confitados y rosa de Bulgaria. Divertida, pop y descaradamente dulce, hecha para esp\u00edritus j\u00f3venes y corazones alegres."
+    }
+]
