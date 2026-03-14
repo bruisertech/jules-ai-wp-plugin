@@ -57,7 +57,7 @@ class Jules_Import_Tool {
         wp_reset_postdata();
 
         // 2. Leer los datos y crear los nuevos productos
-        $json_data = file_get_contents( plugin_dir_path( __FILE__ ) . '../perfumes_data.json' );
+        $json_data = file_get_contents( plugin_dir_path( __FILE__ ) . 'perfumes_data.json' );
         $perfumes = json_decode($json_data, true);
 
         if (!$perfumes) {
@@ -78,6 +78,14 @@ class Jules_Import_Tool {
             // Visibilidad y Estado
             $product->set_status('publish');
             $product->set_catalog_visibility('visible');
+
+            // Descargar y adjuntar imagen si está disponible
+            if (!empty($p['image_url'])) {
+                $image_id = $this->sideload_image($p['image_url'], $p['name']);
+                if ($image_id) {
+                    $product->set_image_id($image_id);
+                }
+            }
 
             // Guardar para obtener el ID
             $product_id = $product->save();
@@ -127,6 +135,31 @@ class Jules_Import_Tool {
             return $new_term['term_id'];
         }
         return false;
+    }
+
+    private function sideload_image($url, $title) {
+        require_once(ABSPATH . 'wp-admin/includes/media.php');
+        require_once(ABSPATH . 'wp-admin/includes/file.php');
+        require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+        $tmp = download_url($url);
+        if (is_wp_error($tmp)) {
+            return false;
+        }
+
+        $file_array = array(
+            'name'     => sanitize_file_name($title) . '.jpg',
+            'tmp_name' => $tmp
+        );
+
+        $id = media_handle_sideload($file_array, 0);
+
+        if (is_wp_error($id)) {
+            @unlink($file_array['tmp_name']);
+            return false;
+        }
+
+        return $id;
     }
 }
 

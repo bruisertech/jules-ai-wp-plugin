@@ -26,13 +26,14 @@ require_once plugin_dir_path( __FILE__ ) . 'jules-image-fixer.php';
 // Require the CSS Tweaks Injector
 require_once plugin_dir_path( __FILE__ ) . 'jules-css-tweaks.php';
 
+require_once plugin_dir_path( __FILE__ ) . 'import-tool.php';
+
 class Jules_Core {
 
     private $undo_engine;
 
     public function __construct() {
         $this->undo_engine = new Jules_Undo_Engine();
-require_once plugin_dir_path( __FILE__ ) . 'import-tool.php';
 
         // Hook into REST API initialization
         add_action( 'rest_api_init', array( $this, 'register_endpoints' ) );
