@@ -66,30 +66,19 @@ class Jules_CSS_Tweaks {
             .woocommerce-product-gallery .woocommerce-product-gallery__image img { display: block !important; margin-bottom: 0 !important; }
 
             /* Splide Related Products Carousel Fix */
+            /* Since the HTML structure is now fully fixed and hermetic (using a div wrapper with absolute a/img),
+               we NO LONGER need extreme negative margins. We just let Tailwind do its job naturally! */
 
-            /* Universal override for the carousel image container to kill mb-3 */
-            .splide__slide a.mb-3 {
-                margin-bottom: 0 !important;
-            }
-
-            /* If the container itself has a gap, remove it */
-            .splide__slide .group.relative.flex.flex-col {
-                gap: 0 !important;
-            }
-
-            /* Extreme override: Pull the text block up aggressively to cover any invisible space.
-               Since we know the exact DOM, we target the flex div directly under the group relative wrapper. */
+            /* We only ensure the text container starts flush. */
             .splide__slide .group.relative > div.flex.flex-col.justify-start {
-                margin-top: -15px !important; /* A noticeable negative margin to prove it works */
+                margin-top: 0 !important;
                 padding-top: 0 !important;
-                position: relative; /* Ensure it renders above */
-                z-index: 10;
             }
 
-            /* Remove margins from the taxonomy span to tighten the design further */
+            /* Tidy up the taxonomy span so it rests perfectly below the image */
             .splide__slide .group.relative > div.flex.flex-col.justify-start > span {
-                margin-top: 0 !important;
-                margin-bottom: 0.5rem !important; /* Standardize bottom margin */
+                margin-top: 0.5rem !important;
+                margin-bottom: 0.25rem !important;
             }
         </style>
         <?php
