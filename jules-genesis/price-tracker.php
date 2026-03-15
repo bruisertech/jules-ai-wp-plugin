@@ -53,29 +53,61 @@ class Jules_Price_Tracker {
         $html_bing = curl_exec($ch);
         curl_close($ch);
 
-        // Analítica de Mercado: Extraer precios y URLs vinculadas (hasta 800 chars de distancia)
+        // Analítica de Mercado: Extraer precios y URLs vinculadas
         $competitor_data = [];
 
-        if (preg_match_all('/<a[^>]+href="([^"]+)"[^>]*>.{0,800}?\$?\s*([1-9]\d{1,2})[.,](\d{3})\s*(COP)?/is', $html_bing, $matches)) {
-            for ($i = 0; $i < count($matches[0]); $i++) {
-                $url = $matches[1][$i];
-                $price_value = (float) ($matches[2][$i] . $matches[3][$i]);
+        // Volvemos a dividir el DOM orgánico por bloques de resultados para mayor precisión
+        if (preg_match_all('/<li class="b_algo".*?<\/li>/s', $html_bing, $blocks)) {
+            foreach ($blocks[0] as $block) {
+                $url = '';
 
-                // Filtrar basura de buscadores
-                if (strpos($url, 'bing.com') !== false || strpos($url, 'microsoft.com') !== false || $url === '#') {
+                // En Bing los enlaces reales del resultado están dentro de <h2> o son el primer enlace
+                if (preg_match('/<h2>\s*<a[^>]+href="([^"]+)"/is', $block, $url_match)) {
+                    $url = $url_match[1];
+                } elseif (preg_match('/<a[^>]+href="([^"]+)"/is', $block, $url_match)) {
+                    $url = $url_match[1];
+                }
+
+                // Si el enlace es de rastreo de Bing (empieza por /ck/a? o contiene bing.com/ck), descodificar la URL real
+                if (strpos($url, '/ck/a?') !== false || strpos($url, 'bing.com/ck') !== false) {
+                    if (preg_match('/&u=a1([a-zA-Z0-9_-]+)/', $url, $u_match)) {
+                        // Bing encodes the URL in a base64-like string after 'u=a1'.
+                        // We replace characters to make it standard base64 and add padding.
+                        $b64 = strtr($u_match[1], '-_', '+/');
+                        $b64 = str_pad($b64, strlen($b64) % 4 === 0 ? strlen($b64) : strlen($b64) + (4 - (strlen($b64) % 4)), '=', STR_PAD_RIGHT);
+                        $decoded = base64_decode($b64);
+                        if (strpos($decoded, 'http') === 0) {
+                            $url = $decoded;
+                        }
+                    }
+                }
+
+                // Filtrar URLs basura de Microsoft o vacías (después de decodificar)
+                if (empty($url) || strpos($url, 'microsoft.com') !== false || strpos($url, 'bing.com') !== false || $url === '#') {
                     continue;
                 }
 
-                // Filtrar el falso positivo global de 82.015 y muestras/decants muy baratas
-                if ($price_value > 85000 && $price_value != 82015 && $price_value <= 2000000) {
-                    $domain = parse_url($url, PHP_URL_HOST);
-                    $domain = str_replace('www.', '', $domain); // Limpiar www para la UI
+                // Extraer el texto limpio del bloque para no atrapar IDs de html
+                $text_block = strip_tags($block);
 
-                    $competitor_data[] = [
-                        'price'  => $price_value,
-                        'url'    => $url,
-                        'domain' => $domain ?: 'Tienda Web'
-                    ];
+                // Buscar precios en formato COP
+                if (preg_match_all('/\$?\s*([1-9]\d{1,2})[.,](\d{3})\s*(COP)?/i', $text_block, $matches)) {
+                    for ($i = 0; $i < count($matches[0]); $i++) {
+                        $price_value = (float) ($matches[1][$i] . $matches[2][$i]);
+
+                        // Filtrar falsos positivos globales de anuncios (82.015, 818.958) y evitar decants baratos
+                        if ($price_value > 85000 && $price_value != 82015 && $price_value != 818958 && $price_value <= 2000000) {
+                            $domain = parse_url($url, PHP_URL_HOST);
+                            $domain = str_replace('www.', '', $domain);
+
+                            $competitor_data[] = [
+                                'price'  => $price_value,
+                                'url'    => $url,
+                                'domain' => $domain ?: 'Tienda Web'
+                            ];
+                            break; // Tomar sólo el primer precio válido de este resultado para no duplicar
+                        }
+                    }
                 }
             }
         }
