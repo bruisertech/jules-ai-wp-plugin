@@ -53,35 +53,43 @@ class Jules_Price_Tracker {
         $html_bing = curl_exec($ch);
         curl_close($ch);
 
-        // Extracting prices from the HTML snippets.
-        // We look for patterns like $190.000, $ 200,000, 180.000 COP, etc.
-        $competitor_prices = [];
+        // Dividir el HTML por resultados de búsqueda orgánicos (li clase b_algo)
+        // para extraer tanto el precio como la URL de la tienda
+        $competitor_data = [];
         $competitor_sources = [];
 
-        // Match common Colombian price formats in search results (e.g., $150.000 or $ 150.000 or 150.000 COP)
-        // This regex looks for a dollar sign, optional space, 2-3 digits, a dot or comma, and 3 digits.
-        if (preg_match_all('/\$?\s*([1-9]\d{1,2})[.,](\d{3})\s*(COP)?/i', $html_bing, $matches)) {
-            for ($i = 0; $i < count($matches[0]); $i++) {
-                // Combine the thousands and hundreds parts into a single integer
-                $price_value = (float) ($matches[1][$i] . $matches[2][$i]);
+        if (preg_match_all('/<li class="b_algo".*?<\/li>/s', $html_bing, $blocks)) {
+            foreach ($blocks[0] as $block) {
+                // Extraer URL del bloque
+                $url = '';
+                if (preg_match('/<a href="([^"]+)"/', $block, $url_match)) {
+                    $url = $url_match[1];
+                }
 
-                // Filter out unrealistic prices (e.g., decants for 20.000 or extremely high fake numbers)
-                // Let's assume a full bottle perfume is between 80,000 and 1,500,000 COP
-                if ($price_value >= 80000 && $price_value <= 1500000) {
-                    $competitor_prices[] = $price_value;
-                    $competitor_sources[] = "Resultado de búsqueda: " . $matches[0][$i];
+                // Match common Colombian price formats
+                if (preg_match_all('/\$?\s*([1-9]\d{1,2})[.,](\d{3})\s*(COP)?/i', $block, $matches)) {
+                    for ($i = 0; $i < count($matches[0]); $i++) {
+                        $price_value = (float) ($matches[1][$i] . $matches[2][$i]);
+
+                        // Ignorar el falso positivo de 82.015 COP y precios muy bajos (decants)
+                        if ($price_value > 85000 && $price_value != 82015 && $price_value <= 1500000) {
+                            $competitor_data[] = [
+                                'price' => $price_value,
+                                'url'   => $url
+                            ];
+                            $competitor_sources[] = "Encontrado " . $matches[0][$i] . " en: " . substr($url, 0, 40) . "...";
+                        }
+                    }
                 }
             }
         }
 
-        $competitor_prices = array_unique($competitor_prices);
-        sort($competitor_prices);
-
-        if (empty($competitor_prices)) {
+        if (empty($competitor_data)) {
             return new WP_REST_Response( array(
                 'success' => true,
                 'my_price' => $my_price,
                 'lowest_competitor' => null,
+                'lowest_url' => null,
                 'average_competitor' => null,
                 'is_lowest' => true,
                 'message' => 'No se encontraron competidores claros para este producto en internet.',
@@ -89,8 +97,21 @@ class Jules_Price_Tracker {
             ), 200 );
         }
 
-        $lowest_competitor = $competitor_prices[0];
-        $average_competitor = array_sum($competitor_prices) / count($competitor_prices);
+        // Sort data by price to find the lowest
+        usort($competitor_data, function($a, $b) {
+            return $a['price'] <=> $b['price'];
+        });
+
+        $lowest_competitor = $competitor_data[0]['price'];
+        $lowest_url = $competitor_data[0]['url'];
+
+        // Calculate average
+        $sum = 0;
+        foreach($competitor_data as $data) {
+            $sum += $data['price'];
+        }
+        $average_competitor = $sum / count($competitor_data);
+
         $is_lowest = $my_price <= $lowest_competitor;
 
         // Limit sources to top 3 unique
@@ -100,6 +121,7 @@ class Jules_Price_Tracker {
             'success' => true,
             'my_price' => $my_price,
             'lowest_competitor' => $lowest_competitor,
+            'lowest_url' => $lowest_url,
             'average_competitor' => round($average_competitor),
             'is_lowest' => $is_lowest,
             'message' => $is_lowest ? '¡Felicidades! Tienes el precio más bajo.' : 'Atención: Tu precio está por encima de la competencia.',

@@ -390,7 +390,8 @@ const PriceTracker = () => {
                     'div',
                     { style: { padding: '15px', background: '#fcf0f1', border: '1px solid #dc3232', borderRadius: '4px', color: '#8a2424' } },
                     el( 'span', { style: { fontSize: '30px', display: 'block', marginBottom: '10px' } }, '⚠️ ALERTA DE PRECIO' ),
-                    el( 'p', { style: { margin: 0, fontWeight: 'bold' } }, 'La competencia está vendiendo más barato. Te sugerimos bajar el precio para ganar la Buy Box.' )
+                    el( 'p', { style: { margin: 0, fontWeight: 'bold', marginBottom: '10px' } }, 'La competencia está vendiendo más barato. Te sugerimos bajar el precio para ganar la Buy Box.' ),
+                    priceData.lowest_url && el( 'a', { href: priceData.lowest_url, target: '_blank', rel: 'noopener noreferrer', style: { display: 'inline-block', background: '#dc3232', color: '#fff', padding: '8px 15px', borderRadius: '4px', textDecoration: 'none', fontWeight: 'bold' } }, '🔗 Visitar Tienda' )
                 ),
 
                 priceData.sources && priceData.sources.length > 0 && el(
