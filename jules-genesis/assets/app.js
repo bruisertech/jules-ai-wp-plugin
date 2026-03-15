@@ -354,52 +354,97 @@ const PriceTracker = () => {
             scanning && el( 'div', { style: { marginTop: '20px', fontSize: '16px' } }, '🤖 Jules está escaneando Falabella, Notino, MercadoLibre y e-commerces colombianos...' ),
             error && el( Notice, { status: 'error', isDismissible: true, onRemove: () => setError( null ) }, error ),
 
-            priceData && el(
-                'div',
-                { style: { marginTop: '20px', padding: '20px', borderRadius: '8px', background: '#f9f9f9', border: '1px solid #ddd', textAlign: 'center' } },
-                el( 'h4', { style: { margin: '0 0 15px 0', fontSize: '18px', color: '#555' } }, 'Resultados del Mercado' ),
-
+            priceData && (priceData.success === false ?
+                el( Notice, { status: 'warning', isDismissible: false }, priceData.message )
+                :
                 el(
                     'div',
-                    { style: { display: 'flex', justifyContent: 'space-around', alignItems: 'center', marginBottom: '20px' } },
-                    // BruiserTech Price
+                    { style: { marginTop: '20px', padding: '20px', borderRadius: '8px', background: '#f9f9f9', border: '1px solid #ddd' } },
+                    el( 'h4', { style: { margin: '0 0 15px 0', fontSize: '20px', color: '#333', textAlign: 'center' } }, 'Análisis Competitivo (Jules Mega Expert)' ),
+
+                    // Main KPIs
                     el(
                         'div',
-                        null,
-                        el( 'p', { style: { margin: 0, color: '#888', fontWeight: 'bold' } }, 'Tu Precio' ),
-                        el( 'p', { style: { margin: 0, fontSize: '24px', fontWeight: 'bold', color: priceData.is_lowest ? '#46b450' : '#dc3232' } }, `$${new Intl.NumberFormat('es-CO').format(priceData.my_price)} COP` )
+                        { style: { display: 'flex', justifyContent: 'space-between', marginBottom: '30px', padding: '15px', background: '#fff', borderRadius: '6px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' } },
+                        el(
+                            'div',
+                            { style: { textAlign: 'center', width: '48%' } },
+                            el( 'span', { style: { color: '#888', fontSize: '14px', textTransform: 'uppercase' } }, 'Tu Precio' ),
+                            el( 'div', { style: { fontSize: '26px', fontWeight: 'bold', color: priceData.status === 'high' ? '#dc3232' : '#2271b1' } }, `$${new Intl.NumberFormat('es-CO').format(priceData.my_price)}` )
+                        ),
+                        el( 'div', { style: { width: '1px', background: '#eee' } } ),
+                        el(
+                            'div',
+                            { style: { textAlign: 'center', width: '48%' } },
+                            el( 'span', { style: { color: '#888', fontSize: '14px', textTransform: 'uppercase' } }, 'Promedio Mercado' ),
+                            el( 'div', { style: { fontSize: '26px', fontWeight: 'bold', color: '#1a1a1a' } }, `$${new Intl.NumberFormat('es-CO').format(priceData.average_market_price)}` )
+                        )
                     ),
-                    // VS
-                    el( 'div', { style: { fontSize: '20px', color: '#ccc', fontWeight: 'bold' } }, 'VS' ),
-                    // Competitor Price
+
+                    // Status Banner
                     el(
                         'div',
-                        null,
-                        el( 'p', { style: { margin: 0, color: '#888', fontWeight: 'bold' } }, 'Mejor Oferta Web' ),
-                        el( 'p', { style: { margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#1a1a1a' } }, priceData.lowest_competitor ? `$${new Intl.NumberFormat('es-CO').format(priceData.lowest_competitor)} COP` : 'N/A' )
-                    )
-                ),
+                        { style: {
+                            padding: '15px',
+                            textAlign: 'center',
+                            borderRadius: '4px',
+                            marginBottom: '30px',
+                            background: priceData.status === 'lowest' ? '#e1faea' : (priceData.status === 'high' ? '#fcf0f1' : '#f0f6fc'),
+                            border: `1px solid ${priceData.status === 'lowest' ? '#46b450' : (priceData.status === 'high' ? '#dc3232' : '#2271b1')}`,
+                            color: priceData.status === 'lowest' ? '#005a0b' : (priceData.status === 'high' ? '#8a2424' : '#043959')
+                        } },
+                        el( 'span', { style: { fontSize: '24px', display: 'block', marginBottom: '5px' } },
+                            priceData.status === 'lowest' ? '🏆 LÍDER EN PRECIO' : (priceData.status === 'high' ? '⚠️ SOBREPRECIO DETECTADO' : '⚖️ PRECIO COMPETITIVO')
+                        ),
+                        el( 'span', { style: { fontWeight: 'bold' } }, priceData.message )
+                    ),
 
-                // Verdict
-                priceData.is_lowest ? el(
-                    'div',
-                    { style: { padding: '15px', background: '#e1faea', border: '1px solid #46b450', borderRadius: '4px', color: '#005a0b' } },
-                    el( 'span', { style: { fontSize: '30px', display: 'block', marginBottom: '10px' } }, '✅ LOWEST PRICE' ),
-                    el( 'p', { style: { margin: 0, fontWeight: 'bold' } }, '¡Excelente! Estás superando o igualando el precio más agresivo del mercado.' )
-                ) : el(
-                    'div',
-                    { style: { padding: '15px', background: '#fcf0f1', border: '1px solid #dc3232', borderRadius: '4px', color: '#8a2424' } },
-                    el( 'span', { style: { fontSize: '30px', display: 'block', marginBottom: '10px' } }, '⚠️ ALERTA DE PRECIO' ),
-                    el( 'p', { style: { margin: 0, fontWeight: 'bold', marginBottom: '10px' } }, 'La competencia está vendiendo más barato. Te sugerimos bajar el precio para ganar la Buy Box.' ),
-                    priceData.lowest_url && el( 'a', { href: priceData.lowest_url, target: '_blank', rel: 'noopener noreferrer', style: { display: 'inline-block', background: '#dc3232', color: '#fff', padding: '8px 15px', borderRadius: '4px', textDecoration: 'none', fontWeight: 'bold' } }, '🔗 Visitar Tienda' )
-                ),
+                    // The 3-Column Offers Table
+                    el(
+                        'div',
+                        { style: { display: 'flex', gap: '15px' } },
 
-                priceData.sources && priceData.sources.length > 0 && el(
-                    'div',
-                    { style: { marginTop: '20px', textAlign: 'left', fontSize: '12px', color: '#666' } },
-                    el( 'p', { style: { fontWeight: 'bold', marginBottom: '5px' } }, 'Muestras detectadas en la red:' ),
-                    el( 'ul', { style: { paddingLeft: '20px', margin: 0 } },
-                        priceData.sources.map((s, i) => el('li', {key: i}, s))
+                        // Column 1: Cheaper
+                        el(
+                            'div',
+                            { style: { flex: 1, background: '#fff', border: '1px solid #ffb900', borderRadius: '4px', padding: '10px' } },
+                            el( 'h5', { style: { marginTop: 0, borderBottom: '1px solid #eee', paddingBottom: '8px', color: '#d63638', textAlign: 'center' } }, '📉 Más Baratos (Riesgo)' ),
+                            priceData.offers.cheaper.length === 0 ? el( 'p', { style: { fontSize: '12px', textAlign: 'center', color: '#999' } }, 'Nadie vende más barato que tú.' ) :
+                            priceData.offers.cheaper.map( (offer, i) => el(
+                                'div', { key: i, style: { marginBottom: '10px', fontSize: '13px' } },
+                                el( 'strong', { style: { display: 'block', color: '#d63638' } }, `$${new Intl.NumberFormat('es-CO').format(offer.price)}` ),
+                                el( 'span', { style: { color: '#666', display: 'block', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' } }, offer.domain ),
+                                el( 'a', { href: offer.url, target: '_blank', style: { fontSize: '11px', textDecoration: 'none' } }, '🔗 Visitar' )
+                            ))
+                        ),
+
+                        // Column 2: Equal
+                        el(
+                            'div',
+                            { style: { flex: 1, background: '#fff', border: '1px solid #2271b1', borderRadius: '4px', padding: '10px' } },
+                            el( 'h5', { style: { marginTop: 0, borderBottom: '1px solid #eee', paddingBottom: '8px', color: '#2271b1', textAlign: 'center' } }, '⚖️ Mismo Precio (Empate)' ),
+                            priceData.offers.equal.length === 0 ? el( 'p', { style: { fontSize: '12px', textAlign: 'center', color: '#999' } }, 'No se detectaron empates exactos.' ) :
+                            priceData.offers.equal.map( (offer, i) => el(
+                                'div', { key: i, style: { marginBottom: '10px', fontSize: '13px' } },
+                                el( 'strong', { style: { display: 'block', color: '#2271b1' } }, `$${new Intl.NumberFormat('es-CO').format(offer.price)}` ),
+                                el( 'span', { style: { color: '#666', display: 'block', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' } }, offer.domain ),
+                                el( 'a', { href: offer.url, target: '_blank', style: { fontSize: '11px', textDecoration: 'none' } }, '🔗 Visitar' )
+                            ))
+                        ),
+
+                        // Column 3: Expensive
+                        el(
+                            'div',
+                            { style: { flex: 1, background: '#fff', border: '1px solid #46b450', borderRadius: '4px', padding: '10px' } },
+                            el( 'h5', { style: { marginTop: 0, borderBottom: '1px solid #eee', paddingBottom: '8px', color: '#46b450', textAlign: 'center' } }, '📈 Más Caros (Margen)' ),
+                            priceData.offers.expensive.length === 0 ? el( 'p', { style: { fontSize: '12px', textAlign: 'center', color: '#999' } }, 'Nadie vende más caro que tú.' ) :
+                            priceData.offers.expensive.map( (offer, i) => el(
+                                'div', { key: i, style: { marginBottom: '10px', fontSize: '13px' } },
+                                el( 'strong', { style: { display: 'block', color: '#46b450' } }, `$${new Intl.NumberFormat('es-CO').format(offer.price)}` ),
+                                el( 'span', { style: { color: '#666', display: 'block', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' } }, offer.domain ),
+                                el( 'a', { href: offer.url, target: '_blank', style: { fontSize: '11px', textDecoration: 'none' } }, '🔗 Visitar' )
+                            ))
+                        )
                     )
                 )
             )

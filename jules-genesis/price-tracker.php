@@ -53,79 +53,109 @@ class Jules_Price_Tracker {
         $html_bing = curl_exec($ch);
         curl_close($ch);
 
-        // Dividir el HTML por resultados de búsqueda orgánicos (li clase b_algo)
-        // para extraer tanto el precio como la URL de la tienda
+        // Analítica de Mercado: Extraer precios y URLs vinculadas (hasta 800 chars de distancia)
         $competitor_data = [];
-        $competitor_sources = [];
 
-        if (preg_match_all('/<li class="b_algo".*?<\/li>/s', $html_bing, $blocks)) {
-            foreach ($blocks[0] as $block) {
-                // Extraer URL del bloque
-                $url = '';
-                if (preg_match('/<a href="([^"]+)"/', $block, $url_match)) {
-                    $url = $url_match[1];
+        if (preg_match_all('/<a[^>]+href="([^"]+)"[^>]*>.{0,800}?\$?\s*([1-9]\d{1,2})[.,](\d{3})\s*(COP)?/is', $html_bing, $matches)) {
+            for ($i = 0; $i < count($matches[0]); $i++) {
+                $url = $matches[1][$i];
+                $price_value = (float) ($matches[2][$i] . $matches[3][$i]);
+
+                // Filtrar basura de buscadores
+                if (strpos($url, 'bing.com') !== false || strpos($url, 'microsoft.com') !== false || $url === '#') {
+                    continue;
                 }
 
-                // Match common Colombian price formats
-                if (preg_match_all('/\$?\s*([1-9]\d{1,2})[.,](\d{3})\s*(COP)?/i', $block, $matches)) {
-                    for ($i = 0; $i < count($matches[0]); $i++) {
-                        $price_value = (float) ($matches[1][$i] . $matches[2][$i]);
+                // Filtrar el falso positivo global de 82.015 y muestras/decants muy baratas
+                if ($price_value > 85000 && $price_value != 82015 && $price_value <= 2000000) {
+                    $domain = parse_url($url, PHP_URL_HOST);
+                    $domain = str_replace('www.', '', $domain); // Limpiar www para la UI
 
-                        // Ignorar el falso positivo de 82.015 COP y precios muy bajos (decants)
-                        if ($price_value > 85000 && $price_value != 82015 && $price_value <= 1500000) {
-                            $competitor_data[] = [
-                                'price' => $price_value,
-                                'url'   => $url
-                            ];
-                            $competitor_sources[] = "Encontrado " . $matches[0][$i] . " en: " . substr($url, 0, 40) . "...";
-                        }
-                    }
+                    $competitor_data[] = [
+                        'price'  => $price_value,
+                        'url'    => $url,
+                        'domain' => $domain ?: 'Tienda Web'
+                    ];
                 }
             }
         }
 
         if (empty($competitor_data)) {
             return new WP_REST_Response( array(
-                'success' => true,
-                'my_price' => $my_price,
-                'lowest_competitor' => null,
-                'lowest_url' => null,
-                'average_competitor' => null,
-                'is_lowest' => true,
-                'message' => 'No se encontraron competidores claros para este producto en internet.',
-                'sources' => []
+                'success' => false,
+                'message' => 'El mercado no arrojó resultados claros para este perfume.',
+                'my_price' => $my_price
             ), 200 );
         }
 
-        // Sort data by price to find the lowest
-        usort($competitor_data, function($a, $b) {
-            return $a['price'] <=> $b['price'];
-        });
+        // Eliminar ofertas duplicadas (mismo precio y mismo dominio) para no saturar
+        $unique_data = [];
+        $seen = [];
+        foreach ($competitor_data as $item) {
+            $key = $item['price'] . '_' . $item['domain'];
+            if (!in_array($key, $seen)) {
+                $unique_data[] = $item;
+                $seen[] = $key;
+            }
+        }
 
-        $lowest_competitor = $competitor_data[0]['price'];
-        $lowest_url = $competitor_data[0]['url'];
-
-        // Calculate average
+        // Calcular el Promedio Exacto del Mercado
         $sum = 0;
-        foreach($competitor_data as $data) {
+        foreach($unique_data as $data) {
             $sum += $data['price'];
         }
-        $average_competitor = $sum / count($competitor_data);
+        $average_market_price = round($sum / count($unique_data));
 
-        $is_lowest = $my_price <= $lowest_competitor;
+        // Clasificar las ofertas frente a TU precio
+        $cheaper = [];
+        $equal = [];
+        $more_expensive = [];
 
-        // Limit sources to top 3 unique
-        $competitor_sources = array_slice(array_unique($competitor_sources), 0, 3);
+        foreach ($unique_data as $data) {
+            // Margen de tolerancia de 1,000 pesos para considerarlo "Igual"
+            $diff = $data['price'] - $my_price;
+
+            if (abs($diff) <= 1000) {
+                $equal[] = $data;
+            } elseif ($diff > 1000) {
+                $more_expensive[] = $data;
+            } else {
+                $cheaper[] = $data;
+            }
+        }
+
+        // Ordenar arreglos para mostrar los más relevantes (Ascendentes para los baratos, Descendentes para los caros)
+        usort($cheaper, function($a, $b) { return $a['price'] <=> $b['price']; }); // Del más barato al menos barato
+        usort($more_expensive, function($a, $b) { return $b['price'] <=> $a['price']; }); // Del más carísimo al menos caro
+
+        // Tomar hasta 3 de cada categoría
+        $top_cheaper = array_slice($cheaper, 0, 3);
+        $top_equal = array_slice($equal, 0, 3);
+        $top_expensive = array_slice($more_expensive, 0, 3);
+
+        // Dictamen competitivo
+        $status = 'competitive';
+        $status_message = '¡Excelente! Estás en sintonía con el promedio del mercado.';
+
+        if ($my_price < ($average_market_price * 0.90)) {
+            $status = 'lowest'; // Más de un 10% por debajo del promedio
+            $status_message = '¡Líder en precios! Tienes una oferta sumamente agresiva comparada al promedio.';
+        } elseif ($my_price > ($average_market_price * 1.10)) {
+            $status = 'high'; // Más de un 10% por encima del promedio
+            $status_message = 'Atención: Tu precio está considerablemente por encima de la media del mercado.';
+        }
 
         return new WP_REST_Response( array(
             'success' => true,
             'my_price' => $my_price,
-            'lowest_competitor' => $lowest_competitor,
-            'lowest_url' => $lowest_url,
-            'average_competitor' => round($average_competitor),
-            'is_lowest' => $is_lowest,
-            'message' => $is_lowest ? '¡Felicidades! Tienes el precio más bajo.' : 'Atención: Tu precio está por encima de la competencia.',
-            'sources' => $competitor_sources
+            'average_market_price' => $average_market_price,
+            'status' => $status,
+            'message' => $status_message,
+            'offers' => array(
+                'cheaper' => $top_cheaper,
+                'equal'   => $top_equal,
+                'expensive' => $top_expensive
+            )
         ), 200 );
     }
 }
