@@ -63,9 +63,25 @@ When fixing CSS or layout issues:
 2. Do not assume standard WooCommerce classes (like `li.product`) are always used. The theme uses custom wrappers like `<div class="grid..."><div class="group...">`.
 3. Use `jules-css-tweaks.php` to inject specific CSS overrides when Tailwind classes alone are insufficient or causing conflicts.
 
-## 4. Operational Directives
+## 4. Architecture Updates: "🔥 Consola de Inyección Bruiser Tech" (Jules Mega Expert)
+
+The custom React dashboard (`jules-admin.php` & `app.js`) is no longer just an undo tool. It now features three main tabs built via `wp.components.TabPanel`:
+1. **Control General:** Contains the `jules-undo-engine.php` logic and the `activity.log` (which is now dynamically prepended with a `BRUISERTECH` ASCII banner and author credits).
+2. **Selector de Imágenes (HD):** An interactive tool (`image-selector.php`) that searches Bing for high-quality perfume images (`perfume bottle white background`) and allows the admin to assign them via native WooCommerce sideloading.
+3. **Comparador de Precios (Price Tracker):** A market analysis tool (`price-tracker.php`).
+
+## 5. Critical Knowledge Base for Future Jules Sessions
+
+- **The Server is Blacklisted for Scraping:** The `lhparfum.com` live server is hosted on AWS/Bitnami. Search engines (Google, Bing, DuckDuckGo) and major commerce APIs (MercadoLibre) aggressively block organic DOM scraping (`cURL`) from this IP.
+    - **Workaround:** The "Price Tracker" now uses a "Smart Simulator" algorithm. Do not attempt to revert to live web scraping without a paid proxy. If you build future features requiring external data, you must use authenticated APIs or client-side JavaScript to bypass the server's IP block.
+- **Custom Taxonomies & Data Structure:** WooCommerce products rely on custom taxonomies (`lh_rareza`, `lh_marca`, `lh_genero`, `lh_aroma`). Rarity values are specific (e.g., `arabe`, `diseñador`, `accesible`, `nicho`). Product descriptions must be written as a professional reviewer's single paragraph.
+- **Pricing:** The currency is Colombian Pesos (COP). Prices are stored as large integers (e.g., `190.000 COP` -> `190000`).
+- **CSS "Immediate Elegance" Trick:** We abandoned expensive AI image generators (Photoroom). Instead, `jules-css-tweaks.php` injects a transparent background, a subtle hover scale, and a dynamically pulsing `logo-lh.png` watermark on all product cards in the frontend grid using purely CSS. Do not break this CSS blend mode when touching frontend styles.
+
+## 6. Operational Directives
 
 1. **Deep Planning Mode:** Before taking action on a new request, ask clarifying questions using communication tools until requirements are completely understood. Only use the `set_plan` tool after this questioning phase. Once the plan is approved, execute autonomously.
 2. **Autonomy:** When instructions are ambiguous, autonomously choose the most technically robust and aesthetically pleasing solution.
 3. **Always Log:** Update `activity.log` locally and push it to the server whenever you deploy a fix.
-4. **Assume Control:** You are the Lead Developer. Do not ask the user to test small things you can verify yourself via `curl` or the API responses. If you break something, use your `jules-undo-engine.php` knowledge to guide the user to the "Jules Live" dashboard to click the Undo button.
+4. **Assume Control:** You are the Lead Developer. Do not ask the user to test small things you can verify yourself via `curl` or the API responses. If you break something, use your `jules-undo-engine.php` knowledge to guide the user to the dashboard to click the Undo button.
+5. **Absolute Security:** NEVER hardcode third-party API keys (like Photoroom or Midjourney) into the repository. Use `get_option()`. **NEVER commit temporary deployment scripts** (`push.php`, `execute.php`) containing the `Application Password` or `Basic Auth` credentials to the repository. Clean your workspace before executing `submit`.
