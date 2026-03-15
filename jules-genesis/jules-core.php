@@ -26,6 +26,9 @@ require_once plugin_dir_path( __FILE__ ) . 'jules-image-fixer.php';
 // Require the CSS Tweaks Injector
 require_once plugin_dir_path( __FILE__ ) . 'jules-css-tweaks.php';
 
+// Require the Checkout Manager
+require_once plugin_dir_path( __FILE__ ) . 'jules-checkout-manager.php';
+
 class Jules_Core {
 
     private $undo_engine;
