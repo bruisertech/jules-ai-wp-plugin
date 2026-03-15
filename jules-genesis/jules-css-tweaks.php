@@ -30,6 +30,12 @@ function jules_custom_css_tweaks() {
         /* CHECKOUT STYLES - "CHAT BUBBLE" / MODERN TRANSPARENT AESTHETIC */
         /* ------------------------------------------------------------- */
 
+
+        /* Hide Billing Details heading */
+        .woocommerce-billing-fields h3 {
+            display: none !important;
+        }
+
         /* Force checkout fields to be visible as modern chat bubbles */
         .woocommerce-checkout .jules-bubble-input input:not([type="checkbox"]):not([type="radio"]),
         .woocommerce-checkout .jules-bubble-input textarea,
