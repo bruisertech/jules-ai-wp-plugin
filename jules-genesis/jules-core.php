@@ -309,3 +309,61 @@ function jules_ajax_add_to_cart_script() {
     </script>
     <?php
 }
+
+
+
+// Dynamic String Replacements (Header Promo & Sidecart Threshold)
+add_action('wp_footer', 'jules_dynamic_text_replacements', 999);
+function jules_dynamic_text_replacements() {
+    ?>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function julesReplaceText(node) {
+            // Text node
+            if (node.nodeType === 3) {
+                var text = node.nodeValue;
+                var oldText = text;
+
+                // Header promo replacement
+                var lowerText = text.toLowerCase();
+                if (lowerText.includes('hasta') && lowerText.includes('20%') && lowerText.includes('descuento')) {
+                    text = 'Envíos gratis por compras a partir de $250.000 COP';
+                }
+
+                // Sidecart threshold replacements
+                if (text.includes('200.000')) {
+                    text = text.replace(/200\.000/g, '250.000');
+                }
+                if (text.includes('200,000')) {
+                    text = text.replace(/200\,000/g, '250.000');
+                }
+
+                if (text !== oldText) {
+                    node.nodeValue = text;
+                }
+            } else if (node.nodeType === 1 && node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE') {
+                for (var i = 0; i < node.childNodes.length; i++) {
+                    julesReplaceText(node.childNodes[i]);
+                }
+            }
+        }
+
+        // Initial run
+        julesReplaceText(document.body);
+
+        // Observer for AJAX sidecart updates
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    mutation.addedNodes.forEach(function(node) {
+                        julesReplaceText(node);
+                    });
+                }
+            });
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+    });
+    </script>
+    <?php
+}

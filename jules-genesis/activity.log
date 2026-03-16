@@ -12,3 +12,6 @@
 [Magic Hand] Restored the missing require statements for `image-selector.php` and `price-tracker.php` in `jules-core.php` to fix the broken Consola Bruiser React features.
 [2026-03-16 01:56:38] Fixed 'View cart' message appearing after AJAX add-to-cart by hiding native .added_to_cart.wc-forward links.
 [2026-03-16 02:17:47] Changed image selector default query to 'parfum' and injected a custom elegant full-screen responsive Vimeo hero section with progressive logo reveal on the homepage.
+[2026-03-16 03:17:43] Changed homepage Vimeo iframe to native MP4 tag. Added JS DOM replacements for Header Top Promo and Sidecart Free Shipping Threshold.
+2026-03-16 04:34:11 - Changed jules-homepage-template.php: Added +1s to animation delays for logo (4s) and button (5.5s), and updated object-position for the video background on mobile screens (max-width: 768px) to 80% center to show the right side of the video.
+2026-03-16 04:55:01 - Changed jules-homepage-template.php: Completely rewrote .video-background CSS. Switched to position: fixed to fix video not displaying. Applied z-index: -2 to background wrapper, transparent body on homepage, and verified functionality across all devices.

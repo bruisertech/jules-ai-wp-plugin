@@ -69,22 +69,27 @@ if ( ! $shop_url ) {
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: -1;
-            pointer-events: none;
+            z-index: -2; /* Ensure it stays strictly behind everything */
             overflow: hidden;
-            background-color: var(--bg-color);
+            background-color: #000;
         }
 
-        /* The iframe needs to scale to cover the screen without letterboxing */
-        .video-background iframe {
+        .video-background video {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100vw;
-            height: 56.25vw; /* 16:9 Aspect Ratio */
-            min-height: 100vh;
-            min-width: 177.77vh; /* 16:9 Aspect Ratio */
-            transform: translate(-50%, -50%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            z-index: -1;
+        }
+
+        /* Mobile Video Alignment - Focus on Right Side */
+        @media (max-width: 768px) {
+            .video-background video {
+                object-position: 80% center; /* Move focus to the right side where the perfume is */
+            }
         }
 
         /* Overlay for readability */
@@ -113,7 +118,7 @@ if ( ! $shop_url ) {
         .reveal-logo {
             opacity: 0;
             animation: fadeInLogo 2s ease-in-out forwards;
-            animation-delay: 3s; /* Wait exactly 3 seconds to trigger */
+            animation-delay: 4s; /* Wait exactly 4 seconds to trigger */
             margin-bottom: 3rem;
         }
 
@@ -142,7 +147,7 @@ if ( ! $shop_url ) {
         .reveal-actions {
             opacity: 0;
             animation: slideUpFade 1.5s ease-out forwards;
-            animation-delay: 4.5s;
+            animation-delay: 5.5s;
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
@@ -204,20 +209,30 @@ if ( ! $shop_url ) {
             margin: 0;
             text-shadow: var(--subtext-shadow);
         }
-    </style>
+        body.home {
+        background-color: transparent !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow-x: hidden !important;
+    }
+</style>
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
 
     <!-- Vimeo Background Video -->
+
+    <!-- Native Background Video -->
     <div class="video-background">
-        <iframe
-            src="https://player.vimeo.com/video/1173864923?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&controls=0&dnt=1"
-            frameborder="0"
-            allow="autoplay; fullscreen"
-            allowfullscreen>
-        </iframe>
+        <video
+            src="https://lhparfum.com/wp-content/uploads/2026/03/vecteezy_spraying-fragrance-particles_1808669.mp4"
+            autoplay
+            loop
+            muted
+            playsinline>
+        </video>
     </div>
+
 
     <!-- Gradient Overlay -->
     <div class="overlay"></div>
@@ -274,7 +289,7 @@ if ( ! $shop_url ) {
     }
     #lh-custom-hero .reveal-actions {
 
-        animation: slideUpFade 1.5s ease-out forwards !important; animation-delay: 4.5s !important;
+        animation: slideUpFade 1.5s ease-out forwards !important; animation-delay: 5.5s !important;
     }
 </style>
 
