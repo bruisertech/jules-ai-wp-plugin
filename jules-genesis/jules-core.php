@@ -26,6 +26,17 @@ require_once plugin_dir_path( __FILE__ ) . 'jules-image-fixer.php';
 // Require the CSS Tweaks Injector
 require_once plugin_dir_path( __FILE__ ) . 'jules-css-tweaks.php';
 
+require_once plugin_dir_path( __FILE__ ) . 'import-tool.php';
+
+// Require the AI Background Processor
+require_once plugin_dir_path( __FILE__ ) . 'ai-processor.php';
+
+// Require the Interactive Image Selector Backend
+require_once plugin_dir_path( __FILE__ ) . 'image-selector.php';
+
+// Require the Price Tracker Backend
+require_once plugin_dir_path( __FILE__ ) . 'price-tracker.php';
+
 class Jules_Core {
 
     private $undo_engine;
@@ -156,6 +167,16 @@ class Jules_Core {
         $log_file = plugin_dir_path( __FILE__ ) . 'activity.log';
         $log_content = '';
 
+        $ascii_art = "
+    ____  ____  __  __________________  __________________ __
+   / __ )/ __ \/ / / /  _/ ___/ ____/ |/ /_  __/ ____/ __ / /
+  / __  / /_/ / / / // / \__ \ / __/    / / / / __/ / /_/ / /
+ / /_/ / _, _/ /_/ // / ___/ / /___/   | / / / /___/ _, _/_/
+/_____/_/ |_|\____/___//____/\____/_/|_|/_/ /_____/_/ |_(_)
+
+";
+        $signature = "\n> Desarrollado por Daniel Contreras Herrera.\n> Sistema de inyección directa a WordPress avanzado, registrado y documentado.\n\n========================================================================\n\n";
+
         if ( file_exists( $log_file ) ) {
             // Read the last 50 lines to keep the response manageable
             $lines = file( $log_file );
@@ -167,9 +188,11 @@ class Jules_Core {
             $log_content = 'Log file not found or empty.';
         }
 
+        $final_output = $ascii_art . $signature . $log_content;
+
         return rest_ensure_response( array(
             'success' => true,
-            'log'     => $log_content,
+            'log'     => $final_output,
         ) );
     }
 }
