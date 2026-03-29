@@ -1,2 +1,17 @@
 [System Initialization] Jules Genesis plugin initialized.
 [Magic Hand] Updated jules-css-tweaks.php to apply a 1:1 aspect ratio fix to the main shop page product grid, which uses `.grid .group` as its DOM container rather than `.splide__slide` or `li.product`. Fixed cut-off image issue.
+[Magic Hand] Fixed mini-cart image sizes. Forced 100px width, 1/1 aspect ratio, and object-fit: contain on .woocommerce-mini-cart-item .flex-none.
+[Magic Hand] Updated mini-cart dynamic button text. Added singular/plural variants based on cart contents count.
+[Magic Hand] Suppressed native WooCommerce "added to cart" notices by hooking wc_add_to_cart_message_html to __return_empty_string.
+[Magic Hand] Implemented custom, app-like toast notifications for adding and removing items. Injected dynamic #jules-app-toast-container hooked to wp_footer in jules-css-tweaks.php. It detects added_to_cart and removed_from_cart JS events.
+[Magic Hand] Added custom JavaScript to jules-core.php to intercept the "Add to Cart" form submissions on single product pages, enforcing an AJAX execution instead of the native full-page reload. The sidecart now opens smoothly and seamlessly upon addition.
+[Magic Hand] Enhanced the AJAX Add to Cart interceptor in jules-core.php to also target direct "Añadir al carrito" links (.add_to_cart_button or ?add-to-cart=) found on the main shop and grid pages. This stops the native WooCommerce behavior of reloading the page and instead forces a background AJAX request, matching the behavior of the single product page and cleanly opening the sidecart.
+[Magic Hand] Server connection restored successfully via SSH base64 injection by the user.
+[Magic Hand] Deployed final jules-core.php with full ?add-to-cart interceptors to handle the Shop/Grid page AJAX logic correctly and cleanly open the sidecart.
+[Magic Hand] Deployed final mini-cart.php forcing 'text-white' to the checkout button in the sidecart, resolving the dark-text contrast issue on light modes while maintaining the custom luxury color gradients based on rarity.
+[Magic Hand] Restored the missing require statements for `image-selector.php` and `price-tracker.php` in `jules-core.php` to fix the broken Consola Bruiser React features.
+[2026-03-16 01:56:38] Fixed 'View cart' message appearing after AJAX add-to-cart by hiding native .added_to_cart.wc-forward links.
+[2026-03-16 02:17:47] Changed image selector default query to 'parfum' and injected a custom elegant full-screen responsive Vimeo hero section with progressive logo reveal on the homepage.
+[2026-03-16 03:17:43] Changed homepage Vimeo iframe to native MP4 tag. Added JS DOM replacements for Header Top Promo and Sidecart Free Shipping Threshold.
+2026-03-16 04:34:11 - Changed jules-homepage-template.php: Added +1s to animation delays for logo (4s) and button (5.5s), and updated object-position for the video background on mobile screens (max-width: 768px) to 80% center to show the right side of the video.
+2026-03-16 04:55:01 - Changed jules-homepage-template.php: Completely rewrote .video-background CSS. Switched to position: fixed to fix video not displaying. Applied z-index: -2 to background wrapper, transparent body on homepage, and verified functionality across all devices.

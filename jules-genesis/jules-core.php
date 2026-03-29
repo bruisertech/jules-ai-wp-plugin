@@ -15,6 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Require the Undo Engine
 require_once plugin_dir_path( __FILE__ ) . 'jules-undo-engine.php';
 
+// Require Homepage Module
+if ( file_exists( plugin_dir_path( __FILE__ ) . 'jules-homepage.php' ) ) {
+    require_once plugin_dir_path( __FILE__ ) . 'jules-homepage.php';
+}
+
+
+
 // Require the Admin Interface
 if ( is_admin() ) {
     require_once plugin_dir_path( __FILE__ ) . 'jules-admin.php';
@@ -22,6 +29,15 @@ if ( is_admin() ) {
 
 // Require the Image Fixer for WooCommerce Placeholders
 require_once plugin_dir_path( __FILE__ ) . 'jules-image-fixer.php';
+
+
+// Require the React Apps for Consola Bruiser
+if ( file_exists( plugin_dir_path( __FILE__ ) . 'image-selector.php' ) ) {
+    require_once plugin_dir_path( __FILE__ ) . 'image-selector.php';
+}
+if ( file_exists( plugin_dir_path( __FILE__ ) . 'price-tracker.php' ) ) {
+    require_once plugin_dir_path( __FILE__ ) . 'price-tracker.php';
+}
 
 // Require the CSS Tweaks Injector
 require_once plugin_dir_path( __FILE__ ) . 'jules-css-tweaks.php';
@@ -176,3 +192,178 @@ class Jules_Core {
 
 // Initialize the plugin
 new Jules_Core();
+
+// Disable the "has been added to your cart" native WooCommerce notices
+add_filter( 'wc_add_to_cart_message_html', '__return_empty_string' );
+
+
+// Prevent page reload on add to cart by enforcing AJAX
+add_action('wp_footer', 'jules_ajax_add_to_cart_script', 99);
+function jules_ajax_add_to_cart_script() {
+    // Only apply if WooCommerce is active
+    if (!function_exists('WC')) return;
+    ?>
+    <script>
+    jQuery(document).ready(function($) {
+
+        // Ensure standard AJAX is forced for links containing ?add-to-cart=
+        $(document).on('click', 'a.add_to_cart_button:not(.ajax_add_to_cart), a[href*="add-to-cart="]', function(e) {
+            var $btn = $(this);
+            var href = $btn.attr('href') || '';
+
+            // Allow variable/grouped product redirects, but if it has `add-to-cart=`, intercept!
+            if (href.indexOf('add-to-cart=') === -1 && !$btn.attr('data-product_id')) {
+                return true;
+            }
+
+            // Stop page refresh immediately!
+            e.preventDefault();
+
+            $btn.addClass('loading').css('opacity', '0.5');
+
+            var product_id = $btn.attr('data-product_id');
+            if (!product_id) {
+                var match = href.match(/add-to-cart=([0-9]+)/);
+                if (match) {
+                    product_id = match[1];
+                }
+            }
+
+            var quantity = $btn.attr('data-quantity') || 1;
+
+            if (!product_id) {
+                window.location.href = href;
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'add_to_cart'),
+                data: {
+                    product_id: product_id,
+                    quantity: quantity
+                },
+                success: function(response) {
+                    if (response.error && response.product_url) {
+                        window.location = response.product_url;
+                        return;
+                    }
+
+                    $btn.removeClass('loading').css('opacity', '1');
+
+                    // Trigger WooCommerce sidecart update event natively
+                    $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $btn]);
+                },
+                error: function() {
+                    window.location.href = href;
+                }
+            });
+        });
+
+        // 2. Intercept single product page forms to prevent reload
+        $('form.cart').on('submit', function(e) {
+            var $form = $(this);
+
+            if ($form.closest('.product').hasClass('product-type-external')) {
+                return true;
+            }
+
+            if (typeof wc_add_to_cart_params === 'undefined') {
+                return true;
+            }
+
+            e.preventDefault();
+
+            var $btn = $form.find('button[type="submit"]');
+
+            $btn.addClass('loading').css('opacity', '0.5');
+
+            var formData = new FormData($form[0]);
+            var product_id = $form.find('input[name="product_id"]').val() || $btn.val() || $form.find('input[name="add-to-cart"]').val();
+            var quantity = $form.find('input[name="quantity"]').val() || 1;
+            var variation_id = $form.find('input[name="variation_id"]').val() || 0;
+
+            $.ajax({
+                type: 'POST',
+                url: wc_add_to_cart_params.wc_ajax_url.toString().replace('%%endpoint%%', 'add_to_cart'),
+                data: {
+                    product_id: product_id,
+                    quantity: quantity,
+                    variation_id: variation_id,
+                },
+                success: function(response) {
+                    if (response.error && response.product_url) {
+                        window.location = response.product_url;
+                        return;
+                    }
+
+                    $btn.removeClass('loading').css('opacity', '1');
+                    $(document.body).trigger('added_to_cart', [response.fragments, response.cart_hash, $btn]);
+                },
+                error: function() {
+                    $form.off('submit').submit();
+                }
+            });
+        });
+    });
+    </script>
+    <?php
+}
+
+
+
+// Dynamic String Replacements (Header Promo & Sidecart Threshold)
+add_action('wp_footer', 'jules_dynamic_text_replacements', 999);
+function jules_dynamic_text_replacements() {
+    ?>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function julesReplaceText(node) {
+            // Text node
+            if (node.nodeType === 3) {
+                var text = node.nodeValue;
+                var oldText = text;
+
+                // Header promo replacement
+                var lowerText = text.toLowerCase();
+                if (lowerText.includes('hasta') && lowerText.includes('20%') && lowerText.includes('descuento')) {
+                    text = 'Envíos gratis por compras a partir de $250.000 COP';
+                }
+
+                // Sidecart threshold replacements
+                if (text.includes('200.000')) {
+                    text = text.replace(/200\.000/g, '250.000');
+                }
+                if (text.includes('200,000')) {
+                    text = text.replace(/200\,000/g, '250.000');
+                }
+
+                if (text !== oldText) {
+                    node.nodeValue = text;
+                }
+            } else if (node.nodeType === 1 && node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE') {
+                for (var i = 0; i < node.childNodes.length; i++) {
+                    julesReplaceText(node.childNodes[i]);
+                }
+            }
+        }
+
+        // Initial run
+        julesReplaceText(document.body);
+
+        // Observer for AJAX sidecart updates
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    mutation.addedNodes.forEach(function(node) {
+                        julesReplaceText(node);
+                    });
+                }
+            });
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+    });
+    </script>
+    <?php
+}
